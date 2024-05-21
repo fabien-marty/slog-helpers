@@ -1,0 +1,35 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - master
+            - init
+    pull_request:
+
+jobs:
+    main_ci:
+        runs-on: ubuntu-22.04
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-go@v4
+              with:
+                go-version: "1.21"
+            - name: Run build
+              run: |
+                make build
+            - name: Run lint
+              run: |
+                make FIX=0 lint
+            - name: Run test
+              run: |
+                make test
+            - name: Run git checks
+              run: |
+                make no-dirty
+            - name: Run clean
+              run: |
+                make clean
+            - name: Run git checks (after clean)
+              run: |
+                make no-dirty
