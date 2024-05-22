@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="terminal" baseProfile="full" viewBox="0 0 960 682" width="960" version="1.1">
+    <defs>
+        <termtosvg:template_settings xmlns:termtosvg="https://github.com/nbedos/termtosvg">
+            <termtosvg:screen_geometry columns="120" rows="40"/>
+            <termtosvg:animation type="css"/>
+        </termtosvg:template_settings>
+        <style type="text/css" id="generated-style"><![CDATA[#screen {
+                font-family: 'DejaVu Sans Mono', monospace;
+                font-style: normal;
+                font-size: 14px;
+            }
+
+        text {
+            dominant-baseline: text-before-edge;
+            white-space: pre;
+        }
+    ]]></style>
+        <style type="text/css" id="user-style">
+            /* The colors defined below are the default 16 colors used for rendering text of the terminal. Adjust
+               them as needed.
+               Solarized light color theme (http://ethanschoonover.com/solarized) */
+            .foreground {fill: #586e75;}
+            .background {fill: #fdf6e3;}
+            .color0 {fill: #fdf6e3;}
+            .color1 {fill: #dc322f;}
+            .color2 {fill: #859900;}
+            .color3 {fill: #b58900;}
+            .color4 {fill: #268bd2;}
+            .color5 {fill: #6c71c4;}
+            .color6 {fill: #2aa198;}
+            .color7 {fill: #586e75;}
+            .color8 {fill: #839496;}
+            .color9 {fill: #cb4b16;}
+            .color10 {fill: #eee8d5;}
+            .color11 {fill: #93a1a1;}
+            .color12 {fill: #657b83;}
+            .color13 {fill: #073642;}
+            .color14 {fill: #d33682;}
+            .color15 {fill: #002b36;}
+        </style>
+    </defs>
+    <svg id="screen" width="960" height="680" viewBox="0 0 960 680" preserveAspectRatio="xMidYMin slice"><rect class="background" height="100%" width="100%" x="0" y="0"/><defs><g id="g1"><text x="0" textLength="16" class="foreground">&#9654; </text><text x="16" textLength="160" class="color6">2024-05-22T09:47:16Z</text><text x="176" textLength="8" class="foreground"> </text><text x="184" textLength="56" class="color2">[DEBUG]</text><text x="240" textLength="8" class="foreground"> </text><text x="248" textLength="184" font-weight="bold" class="foreground">this is a debug message</text></g><g id="g2"><text x="0" textLength="48" class="foreground">    &#8627; </text><text x="48" textLength="56" class="color3">rootkey</text><text x="104" textLength="8" font-weight="bold" class="foreground">=</text><text x="112" textLength="72" class="color5">rootvalue</text><text x="184" textLength="8" class="foreground"> </text><text x="192" textLength="24" class="color3">key</text><text x="216" textLength="8" font-weight="bold" class="foreground">=</text><text x="224" textLength="40" class="color5">value</text></g><g id="g3"><text x="0" textLength="16" class="foreground">&#9654; </text><text x="16" textLength="160" class="color6">2024-05-22T09:47:16Z</text><text x="176" textLength="8" class="foreground"> </text><text x="184" textLength="56" class="color4">[INFO ]</text><text x="240" textLength="8" class="foreground"> </text><text x="248" textLength="184" font-weight="bold" class="foreground">this is an info message</text></g><g id="g4"><text x="0" textLength="16" class="foreground">&#9654; </text><text x="16" textLength="160" class="color6">2024-05-22T09:47:16Z</text><text x="176" textLength="8" class="foreground"> </text><text x="184" textLength="56" class="color1">[WARN ]</text><text x="240" textLength="8" class="foreground"> </text><text x="248" textLength="200" font-weight="bold" class="foreground">this is a warning message</text></g><g id="g5"><text x="0" textLength="48" class="foreground">    &#8627; </text><text x="48" textLength="56" class="color3">rootkey</text><text x="104" textLength="8" font-weight="bold" class="foreground">=</text><text x="112" textLength="72" class="color5">rootvalue</text><text x="184" textLength="8" class="foreground"> </text><text x="192" textLength="24" class="color3">key</text><text x="216" textLength="8" font-weight="bold" class="foreground">=</text><text x="224" textLength="40" class="color5">value</text><text x="264" textLength="8" class="foreground"> </text><text x="272" textLength="96" class="color3">group.intkey</text><text x="368" textLength="8" font-weight="bold" class="foreground">=</text><text x="376" textLength="24" class="color5">123</text></g><g id="g6"><text x="0" textLength="16" class="foreground">&#9654; </text><text x="16" textLength="160" class="color6">2024-05-22T09:47:16Z</text><text x="176" textLength="8" class="foreground"> </text><text x="184" textLength="56" class="color7">[ERROR]</text><text x="240" textLength="8" class="foreground"> </text><text x="248" textLength="368" font-weight="bold" class="foreground">this is an error with an automatic stackstrace</text></g><g id="g7"><text x="0" textLength="408" class="color7">error log level detected, let's print a stack trace</text></g><g id="g8"><text x="0" textLength="560" font-weight="bold" class="foreground">/Users/fab/src/slog-helpers/cmd/demo/main.go:26 main.anotherFunction()</text></g><g id="g9"><text x="0" textLength="16" class="color0">23</text><text x="64" textLength="8" class="foreground">}</text></g><g id="g10"><text x="0" textLength="16" class="color0">24</text></g><g id="g11"><text x="0" textLength="16" class="color0">25</text><text x="64" textLength="320" class="foreground">func anotherFunction(lgr *slog.Logger) {</text></g><g id="g12"><text x="0" textLength="16" class="color1">26</text><text x="128" textLength="472" class="color1">lgr.Error("this is an error with an automatic stackstrace")</text></g><g id="g13"><text x="0" textLength="16" class="color0">27</text><text x="64" textLength="8" class="foreground">}</text></g><g id="g14"><text x="0" textLength="16" class="color0">28</text></g><g id="g15"><text x="0" textLength="472" font-weight="bold" class="foreground">/Users/fab/src/slog-helpers/cmd/demo/main.go:22 main.main()</text></g><g id="g16"><text x="0" textLength="16" class="color0">19</text><text x="128" textLength="304" class="foreground">logger.Info("this is an info message")</text></g><g id="g17"><text x="0" textLength="16" class="color0">20</text><text x="128" textLength="336" class="foreground">anotherLogger := logger.WithGroup("group")</text></g><g id="g18"><text x="0" textLength="16" class="color0">21</text><text x="128" textLength="576" class="foreground">anotherLogger.Warn("this is a warning message", slog.Int("intkey", 123))</text></g><g id="g19"><text x="0" textLength="16" class="color1">22</text><text x="128" textLength="784" class="color1">anotherFunction(anotherLogger) // log an error through another function to showcase the stacktrace</text></g><g id="g20"><text x="0" textLength="8" class="background"> </text></g></defs><g><use xlink:href="#g1" y="0"/><use xlink:href="#g2" y="17"/><use xlink:href="#g3" y="34"/><use xlink:href="#g2" y="51"/><use xlink:href="#g4" y="68"/><use xlink:href="#g5" y="85"/><rect x="184" y="102" width="56" height="17" class="color1"/><use xlink:href="#g6" y="102"/><use xlink:href="#g5" y="119"/><rect x="0" y="136" width="408" height="17" class="color1"/><use xlink:href="#g7" y="136"/><use xlink:href="#g8" y="187"/><use xlink:href="#g9" y="204"/><use xlink:href="#g10" y="221"/><use xlink:href="#g11" y="238"/><use xlink:href="#g12" y="255"/><use xlink:href="#g13" y="272"/><use xlink:href="#g14" y="289"/><use xlink:href="#g15" y="323"/><use xlink:href="#g16" y="340"/><use xlink:href="#g17" y="357"/><use xlink:href="#g18" y="374"/><use xlink:href="#g19" y="391"/><use xlink:href="#g9" y="408"/><use xlink:href="#g10" y="425"/><rect x="0" y="459" width="8" height="17" class="foreground"/><use xlink:href="#g20" y="459"/></g></svg>
+</svg>

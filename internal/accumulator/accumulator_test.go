@@ -1,4 +1,4 @@
-package slogh
+package accumulator
 
 import (
 	"log/slog"
@@ -9,13 +9,13 @@ import (
 )
 
 func TestAssemble(t *testing.T) {
-	a := newAccumulator()
-	a = a.withAttrs([]slog.Attr{slog.String("rootkey", "rootvalue")})
-	a = a.withGroup("group1")
-	a = a.withAttrs([]slog.Attr{slog.String("group1key", "group1value")})
-	a = a.withGroup("group2")
-	a = a.withAttrs([]slog.Attr{slog.String("group2key", "group2value")})
-	attrs := a.assemble()
+	a := NewAccumulator()
+	a = a.WithAttrs([]slog.Attr{slog.String("rootkey", "rootvalue")})
+	a = a.WithGroup("group1")
+	a = a.WithAttrs([]slog.Attr{slog.String("group1key", "group1value")})
+	a = a.WithGroup("group2")
+	a = a.WithAttrs([]slog.Attr{slog.String("group2key", "group2value")})
+	attrs := a.Assemble()
 	assert.Equal(t, 2, len(attrs))
 	assert.Equal(t, "rootkey", attrs[0].Key)
 	assert.Equal(t, "rootvalue", attrs[0].Value.String())

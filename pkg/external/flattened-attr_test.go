@@ -1,4 +1,4 @@
-package slogh
+package external
 
 import (
 	"log/slog"
@@ -9,10 +9,10 @@ import (
 
 func TestNewFlattenedAttr(t *testing.T) {
 	attr := slog.String("key", "value")
-	prefixed := NewFlattenedAttr(attr, "")
+	prefixed := newFlattenedAttr(attr, "")
 	assert.Equal(t, "key", prefixed.Key)
 	assert.Equal(t, "value", prefixed.Value.String())
-	prefixed = NewFlattenedAttr(attr, "foo")
+	prefixed = newFlattenedAttr(attr, "foo")
 	assert.Equal(t, "foo.key", prefixed.Key)
 	assert.Equal(t, "value", prefixed.Value.String())
 }
@@ -25,7 +25,7 @@ func TestNewFlattenedAttrs(t *testing.T) {
 		slog.Group("group2", slog.String("group2key", "group2value")),
 	)
 	attrs := []slog.Attr{a1, a2}
-	fattrs := NewFlattenedAttrs(attrs, "")
+	fattrs := newFlattenedAttrs(attrs, "")
 	assert.Equal(t, 3, len(fattrs))
 	assert.Equal(t, "rootkey", fattrs[0].Key)
 	assert.Equal(t, "rootvalue", fattrs[0].Value.String())

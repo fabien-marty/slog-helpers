@@ -1,4 +1,4 @@
-package slogh
+package human
 
 import (
 	"fmt"
@@ -6,6 +6,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/fabien-marty/slog-helpers/internal/ansi"
+	"github.com/fabien-marty/slog-helpers/internal/bufferpool"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,8 +21,8 @@ func replaceDigits(s string) string {
 }
 
 func TestNewHumanHandlerNoColor(t *testing.T) {
-	buffer := getBuffer()
-	defer putBuffer(buffer)
+	buffer := bufferpool.GetBuffer()
+	defer bufferpool.PutBuffer(buffer)
 	h := NewHumanHandler(buffer, &HumandHandlerOptions{
 		UseColors: false,
 	})
@@ -38,7 +40,7 @@ func TestNewHumanHandlerNoColor(t *testing.T) {
 }
 
 func TestNewHumanHandlerColors(t *testing.T) {
-	buffer := getBuffer()
+	buffer := bufferpool.GetBuffer()
 	h := NewHumanHandler(buffer, &HumandHandlerOptions{
 		UseColors: true,
 	})
@@ -66,9 +68,9 @@ func TestLevelToStringNoColor(t *testing.T) {
 }
 
 func TestLevelToString(t *testing.T) {
-	assert.Equal(t, ansiGreen+"[DEBUG]"+ansiReset, levelToString(slog.LevelDebug))
-	assert.Equal(t, ansiBlue+"[INFO ]"+ansiReset, levelToString(slog.LevelInfo))
-	assert.Equal(t, ansiRed+"[WARN ]"+ansiReset, levelToString(slog.LevelWarn))
-	assert.Equal(t, ansiRedBackground+ansiWhite+"[ERROR]"+ansiReset, levelToString(slog.LevelError))
-	assert.Equal(t, ansiCyan+"[?????]"+ansiReset, levelToString(slog.Level(42)))
+	assert.Equal(t, ansi.Green+"[DEBUG]"+ansi.Reset, levelToString(slog.LevelDebug))
+	assert.Equal(t, ansi.Blue+"[INFO ]"+ansi.Reset, levelToString(slog.LevelInfo))
+	assert.Equal(t, ansi.Red+"[WARN ]"+ansi.Reset, levelToString(slog.LevelWarn))
+	assert.Equal(t, ansi.RedBackground+ansi.White+"[ERROR]"+ansi.Reset, levelToString(slog.LevelError))
+	assert.Equal(t, ansi.Cyan+"[?????]"+ansi.Reset, levelToString(slog.Level(42)))
 }

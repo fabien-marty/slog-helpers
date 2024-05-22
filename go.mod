@@ -1,6 +1,6 @@
 module github.com/fabien-marty/slog-helpers
 
-go 1.21
+go 1.21.7
 
 require (
 	github.com/mattn/go-isatty v0.0.20
@@ -18,3 +18,5 @@ require (
 	github.com/vlad-tokarev/sloggcp v0.0.0-20230820053939-1b7dbb8c7b58
 	golang.org/x/sys v0.6.0 // indirect
 )
+
+replace github.com/ztrue/tracerr => ../tracerr

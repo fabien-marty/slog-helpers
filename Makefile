@@ -7,8 +7,8 @@ TESTARGS=-race
 COVERARGS=-cover -covermode=atomic -coverprofile=coverage.out
 CMDS=cmd/demo/demo
 BUILDARGS=
-PKGSOURCES:=$(shell find ../../pkg -type f -name '*.go' 2>/dev/null)
-INTERNALSOURCES:=$(shell find ../../internal -type f -name '*.go' 2>/dev/null)
+PKGSOURCES:=$(shell find pkg -type f -name '*.go' 2>/dev/null)
+INTERNALSOURCES:=$(shell find internal -type f -name '*.go' 2>/dev/null)
 
 default: help
 
@@ -63,7 +63,7 @@ html-coverage: ## Build html coverage
 	go tool cover -html coverage.out -o cover.html
 
 .PHONY: lint
-lint: govet gofmt golangcilint ## Lint the code (also fix the code if FIX=1, default)
+lint: govet gofmt golangcilint lint-python ## Lint the code (also fix the code if FIX=1, default)
 
 tmp/bin/golangci-lint:
 	@mkdir -p tmp/bin
@@ -77,6 +77,31 @@ clean: _cmd_clean ## Clean the repo
 .PHONY: _cmd_clean
 _cmd_clean:
 	rm -f $(CMDS)
+
+.PHONY: venv
+venv: tmp/python_venv/bin/activate 
+
+tmp/python_venv/bin/activate: requirements.txt
+	@mkdir -p tmp
+	python3 -m venv tmp/python_venv
+	source tmp/python_venv/bin/activate && pip install -r requirements.txt
+
+.PHONY: freeze-requirements
+freeze-requirements: tmp/python_venv/bin/activate ## Freeze the python (dev) requirements
+	source tmp/python_venv/bin/activate && pip freeze > requirements.txt
+
+.PHONY: lint-python
+lint-python: tmp/python_venv/bin/activate ## Lint the python code
+	@if test "$(FIX)" = "1"; then \
+		source tmp/python_venv/bin/activate && set -x; ruff format .;\
+	else \
+		source tmp/python_venv/bin/activate && set -x; ruff format --diff .;\
+	fi
+	@if test "$(FIX)" = "1"; then \
+		source tmp/python_venv/bin/activate && set -x; ruff check --fix .;\
+	else \
+		source tmp/python_venv/bin/activate && set -x; ruff check --no-fix .;\
+	fi
 
 .PHONY: help
 help::

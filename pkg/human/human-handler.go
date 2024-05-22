@@ -1,17 +1,23 @@
-package slogh
+package human
 
 import (
 	"io"
 	"log/slog"
 	"sync"
 	"time"
+
+	"github.com/fabien-marty/slog-helpers/internal/ansi"
+	"github.com/fabien-marty/slog-helpers/internal/bufferpool"
+	"github.com/fabien-marty/slog-helpers/pkg/external"
 )
+
+var _ slog.Handler = &HumanHandler{}
 
 var humanMutex sync.Mutex
 
 // HumanHandler is an opaque type that implements the slog.Handler interface.
 type HumanHandler struct {
-	ExternalHandler
+	external.ExternalHandler
 }
 
 // HumandHandlerOptions is a struct that contains the options for the HumanHandler.
@@ -22,18 +28,18 @@ type HumandHandlerOptions struct {
 
 // NewHumanHandler creates a new HumanHandler.
 func NewHumanHandler(w io.Writer, opts *HumandHandlerOptions) *HumanHandler {
-	var callback ExternalHandlerStringifiedAttrsFunction
+	var callback external.ExternalHandlerStringifiedAttrsFunction
 	if opts.UseColors {
-		callback = func(time time.Time, level slog.Level, message string, attrs []StringifiedAttr) error {
+		callback = func(time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
 			return handleColor(w, time, level, message, attrs)
 		}
 	} else {
-		callback = func(time time.Time, level slog.Level, message string, attrs []StringifiedAttr) error {
+		callback = func(time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
 			return handleNoColor(w, time, level, message, attrs)
 		}
 	}
 	return &HumanHandler{
-		ExternalHandler: *NewExternalHandler(&ExternalHandlerOptions{
+		ExternalHandler: *external.NewExternalHandler(&external.ExternalHandlerOptions{
 			HandlerOptions:      opts.HandlerOptions,
 			StringifiedCallback: callback,
 		}),
@@ -57,48 +63,48 @@ func levelToStringNoColor(level slog.Level) string {
 func levelToString(level slog.Level) string {
 	switch level {
 	case slog.LevelDebug:
-		return ansiGreen + "[DEBUG]" + ansiReset
+		return ansi.Green + "[DEBUG]" + ansi.Reset
 	case slog.LevelInfo:
-		return ansiBlue + "[INFO ]" + ansiReset
+		return ansi.Blue + "[INFO ]" + ansi.Reset
 	case slog.LevelWarn:
-		return ansiRed + "[WARN ]" + ansiReset
+		return ansi.Red + "[WARN ]" + ansi.Reset
 	case slog.LevelError:
-		return ansiRedBackground + ansiWhite + "[ERROR]" + ansiReset
+		return ansi.RedBackground + ansi.White + "[ERROR]" + ansi.Reset
 	}
-	return ansiCyan + "[?????]" + ansiReset
+	return ansi.Cyan + "[?????]" + ansi.Reset
 }
 
-func handleColor(w io.Writer, time time.Time, level slog.Level, message string, attrs []StringifiedAttr) error {
-	buffer := getBuffer()
-	defer putBuffer(buffer)
+func handleColor(w io.Writer, time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
+	buffer := bufferpool.GetBuffer()
+	defer bufferpool.PutBuffer(buffer)
 	ascTime := "              "
 	if !time.IsZero() {
 		ascTime = time.UTC().Format("2006-01-02T15:04:05Z")
 	}
 	buffer.WriteString("▶ ")
-	buffer.WriteString(ansiCyan)
+	buffer.WriteString(ansi.Cyan)
 	buffer.WriteString(ascTime)
-	buffer.WriteString(ansiReset)
+	buffer.WriteString(ansi.Reset)
 	buffer.WriteString(" ")
 	buffer.WriteString(levelToString(level))
 	buffer.WriteString(" ")
-	buffer.WriteString(ansiBold)
+	buffer.WriteString(ansi.Bold)
 	buffer.WriteString(message)
-	buffer.WriteString(ansiReset)
+	buffer.WriteString(ansi.Reset)
 	nAttr := 0
 	if len(attrs) > 0 {
 		buffer.WriteString("\n    ↳ ")
 	}
 	for _, attr := range attrs {
-		buffer.WriteString(ansiYellow)
+		buffer.WriteString(ansi.Yellow)
 		buffer.WriteString(attr.Key)
-		buffer.WriteString(ansiReset)
-		buffer.WriteString(ansiBold)
+		buffer.WriteString(ansi.Reset)
+		buffer.WriteString(ansi.Bold)
 		buffer.WriteString("=")
-		buffer.WriteString(ansiReset)
-		buffer.WriteString(ansiMagenta)
+		buffer.WriteString(ansi.Reset)
+		buffer.WriteString(ansi.Magenta)
 		buffer.WriteString(attr.Value)
-		buffer.WriteString(ansiReset)
+		buffer.WriteString(ansi.Reset)
 		nAttr++
 		if nAttr < len(attrs) {
 			buffer.WriteString(" ")
@@ -111,9 +117,9 @@ func handleColor(w io.Writer, time time.Time, level slog.Level, message string, 
 	return err
 }
 
-func handleNoColor(w io.Writer, time time.Time, level slog.Level, message string, attrs []StringifiedAttr) error {
-	buffer := getBuffer()
-	defer putBuffer(buffer)
+func handleNoColor(w io.Writer, time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
+	buffer := bufferpool.GetBuffer()
+	defer bufferpool.PutBuffer(buffer)
 	ascTime := "              "
 	if !time.IsZero() {
 		ascTime = time.UTC().Format("2006-01-02T15:04:05Z")

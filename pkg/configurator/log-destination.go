@@ -1,4 +1,4 @@
-package slogh
+package configurator
 
 import (
 	"fmt"

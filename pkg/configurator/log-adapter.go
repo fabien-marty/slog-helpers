@@ -1,19 +1,21 @@
-package slogh
+package configurator
 
 import (
 	"log"
 	"log/slog"
 	"time"
+
+	"github.com/fabien-marty/slog-helpers/pkg/external"
 )
 
 func NewLogSlogAdapter(originalLogger *log.Logger) *slog.Logger {
-	var callback ExternalHandlerStringifiedAttrsFunction = func(time time.Time, level slog.Level, message string, attrs []StringifiedAttr) error {
+	var callback external.ExternalHandlerStringifiedAttrsFunction = func(time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
 		return callback(originalLogger, time, level, message, attrs)
 	}
 	return GetLogger(WithLogFormat(LogFormatExternal), WithExternalStringifiedAttrsCallback(callback))
 }
 
-func callback(originalLogger *log.Logger, time time.Time, level slog.Level, message string, attrs []StringifiedAttr) error {
+func callback(originalLogger *log.Logger, time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
 	// Do something with the log message
 	ascTime := "              "
 	if !time.IsZero() {

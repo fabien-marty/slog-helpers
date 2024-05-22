@@ -1,9 +1,11 @@
-package slogh
+package external
 
 import (
 	"context"
 	"log/slog"
 	"time"
+
+	"github.com/fabien-marty/slog-helpers/internal/accumulator"
 )
 
 var _ slog.Handler = &ExternalHandler{}
@@ -27,14 +29,14 @@ type ExternalHandlerOptions struct {
 
 // ExternalHandler is an opaque type that implements the slog.Handler interface.
 type ExternalHandler struct {
-	*accumulator
+	*accumulator.Accumulator
 	opts *ExternalHandlerOptions
 }
 
 // NewExternalHandler creates a new ExternalHandler.
 func NewExternalHandler(opts *ExternalHandlerOptions) *ExternalHandler {
 	return &ExternalHandler{
-		accumulator: newAccumulator(),
+		Accumulator: accumulator.NewAccumulator(),
 		opts:        opts,
 	}
 }
@@ -48,26 +50,26 @@ func (eh *ExternalHandler) Enabled(context context.Context, level slog.Level) bo
 }
 
 func (eh *ExternalHandler) WithGroup(group string) slog.Handler {
-	eh.accumulator = eh.withGroup(group)
+	eh.Accumulator = eh.Accumulator.WithGroup(group)
 	return eh
 }
 
 func (eh *ExternalHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
-	eh.accumulator = eh.withAttrs(attrs)
+	eh.Accumulator = eh.Accumulator.WithAttrs(attrs)
 	return eh
 }
 
 func (eh *ExternalHandler) Handle(context context.Context, record slog.Record) error {
-	var attrs []slog.Attr = eh.accumulator.withRecordAttrs(record).assemble()
+	var attrs []slog.Attr = eh.Accumulator.WithRecordAttrs(record).Assemble()
 	if eh.opts.Callback != nil {
 		return eh.opts.Callback(record.Time, record.Level, record.Message, attrs)
 	}
 	if eh.opts.FlattenedCallback != nil {
-		fattrs := NewFlattenedAttrs(attrs, "")
+		fattrs := newFlattenedAttrs(attrs, "")
 		return eh.opts.FlattenedCallback(record.Time, record.Level, record.Message, fattrs)
 	}
 	if eh.opts.StringifiedCallback != nil {
-		sattrs := NewStringifiedAttrs(NewFlattenedAttrs(attrs, ""))
+		sattrs := newStringifiedAttrs(newFlattenedAttrs(attrs, ""))
 		return eh.opts.StringifiedCallback(record.Time, record.Level, record.Message, sattrs)
 	}
 	return nil

@@ -1,4 +1,4 @@
-package slogh
+package configurator
 
 import (
 	"fmt"
@@ -6,6 +6,9 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/fabien-marty/slog-helpers/pkg/external"
+	"github.com/fabien-marty/slog-helpers/pkg/human"
+	"github.com/fabien-marty/slog-helpers/pkg/stacktrace"
 	"github.com/mattn/go-isatty"
 	"github.com/vlad-tokarev/sloggcp"
 )
@@ -17,9 +20,9 @@ type loggerOptions struct {
 	_stackTrace                      *bool
 	_colors                          *bool
 	destinationWriter                io.Writer
-	externalCallback                 ExternalHandlerFunction
-	externalFlattenedAttrsCallback   ExternalHandlerFlattenedAttrsFunction
-	externalStringifiedAttrsCallback ExternalHandlerStringifiedAttrsFunction
+	externalCallback                 external.ExternalHandlerFunction
+	externalFlattenedAttrsCallback   external.ExternalHandlerFlattenedAttrsFunction
+	externalStringifiedAttrsCallback external.ExternalHandlerStringifiedAttrsFunction
 	level                            slog.Level
 	destination                      LogDestination
 	format                           LogFormat
@@ -87,21 +90,21 @@ func WithColors(flag bool) LoggerOption {
 	}
 }
 
-func WithExternalCallback(callback ExternalHandlerFunction) LoggerOption {
+func WithExternalCallback(callback external.ExternalHandlerFunction) LoggerOption {
 	return func(options *loggerOptions) error {
 		options.externalCallback = callback
 		return nil
 	}
 }
 
-func WithExternalFlattenedAttrsCallback(callback ExternalHandlerFlattenedAttrsFunction) LoggerOption {
+func WithExternalFlattenedAttrsCallback(callback external.ExternalHandlerFlattenedAttrsFunction) LoggerOption {
 	return func(options *loggerOptions) error {
 		options.externalFlattenedAttrsCallback = callback
 		return nil
 	}
 }
 
-func WithExternalStringifiedAttrsCallback(callback ExternalHandlerStringifiedAttrsFunction) LoggerOption {
+func WithExternalStringifiedAttrsCallback(callback external.ExternalHandlerStringifiedAttrsFunction) LoggerOption {
 	return func(options *loggerOptions) error {
 		options.externalStringifiedAttrsCallback = callback
 		return nil
@@ -155,7 +158,7 @@ func GetLogger(opts ...LoggerOption) *slog.Logger {
 	var handler slog.Handler
 	switch options.format {
 	case LogFormatTextHuman:
-		handler = NewHumanHandler(options.destinationWriter, &HumandHandlerOptions{
+		handler = human.NewHumanHandler(options.destinationWriter, &human.HumandHandlerOptions{
 			HandlerOptions: standardHandlerOpts,
 			UseColors:      options.colors,
 		},
@@ -169,17 +172,17 @@ func GetLogger(opts ...LoggerOption) *slog.Logger {
 		handler = slog.NewJSONHandler(options.destinationWriter, &standardHandlerOpts)
 	case LogFormatExternal:
 		if options.externalCallback != nil {
-			handler = NewExternalHandler(&ExternalHandlerOptions{
+			handler = external.NewExternalHandler(&external.ExternalHandlerOptions{
 				HandlerOptions: standardHandlerOpts,
 				Callback:       options.externalCallback,
 			})
 		} else if options.externalFlattenedAttrsCallback != nil {
-			handler = NewExternalHandler(&ExternalHandlerOptions{
+			handler = external.NewExternalHandler(&external.ExternalHandlerOptions{
 				HandlerOptions:    standardHandlerOpts,
 				FlattenedCallback: options.externalFlattenedAttrsCallback,
 			})
 		} else if options.externalStringifiedAttrsCallback != nil {
-			handler = NewExternalHandler(&ExternalHandlerOptions{
+			handler = external.NewExternalHandler(&external.ExternalHandlerOptions{
 				HandlerOptions:      standardHandlerOpts,
 				StringifiedCallback: options.externalStringifiedAttrsCallback,
 			})
@@ -190,18 +193,18 @@ func GetLogger(opts ...LoggerOption) *slog.Logger {
 		panic(fmt.Sprintf("unsupported log format: %s", options.format))
 	}
 	if options.stackTrace {
-		var mode StackTraceHandlerMode
+		var mode stacktrace.StackTraceHandlerMode
 		switch options.format {
 		case LogFormatJsonGcp, LogFormatJson:
-			mode = StackTraceHandlerModeAddAttr
+			mode = stacktrace.StackTraceHandlerModeAddAttr
 		case LogFormatTextHuman, LogFormatText:
 			if options.colors {
-				mode = StackTraceHandlerModePrintWithColors
+				mode = stacktrace.StackTraceHandlerModePrintWithColors
 			} else {
-				mode = StackTraceHandlerModePrint
+				mode = stacktrace.StackTraceHandlerModePrint
 			}
 		}
-		handler = NewStackTraceHandler(handler, &StackTraceHandlerOptions{
+		handler = stacktrace.NewStackTraceHandler(handler, &stacktrace.StackTraceHandlerOptions{
 			Mode:           mode,
 			HandlerOptions: standardHandlerOpts,
 			WriterForPrint: options.destinationWriter,

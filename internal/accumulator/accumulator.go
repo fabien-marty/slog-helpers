@@ -1,4 +1,4 @@
-package slogh
+package accumulator
 
 import (
 	"log/slog"
@@ -12,33 +12,33 @@ type payload struct {
 	parent *payload
 }
 
-type accumulator struct {
+type Accumulator struct {
 	last *payload
 }
 
-// newAccumulator is a base struct for building slog.Handler that accumulates
+// NewAccumulator is a base struct for building slog.Handler that accumulates
 // attributes and groups and returns them when calling assemble.
-func newAccumulator() *accumulator {
-	return &accumulator{
+func NewAccumulator() *Accumulator {
+	return &Accumulator{
 		last: &payload{},
 	}
 }
 
 // WithAttrs returns a new accumulator with the given attributes.
-func (a *accumulator) withAttrs(attrs []slog.Attr) *accumulator {
+func (a *Accumulator) WithAttrs(attrs []slog.Attr) *Accumulator {
 	acc := *a // shallow copy
 	acc.last.attrs = append(acc.last.attrs, attrs...)
 	return &acc
 }
 
 // WithGroup returns a new accumulator with the given group.
-func (a *accumulator) withGroup(group string) *accumulator {
+func (a *Accumulator) WithGroup(group string) *Accumulator {
 	acc := *a // shallow copy
 	acc.last = &payload{group: group, parent: acc.last}
 	return &acc
 }
 
-func (a *accumulator) assemble() (attrs []slog.Attr) {
+func (a *Accumulator) Assemble() (attrs []slog.Attr) {
 	for p := a.last; p != nil; p = p.parent {
 		attrs = append(p.attrs, attrs...)
 		if p.group != "" {
@@ -48,9 +48,9 @@ func (a *accumulator) assemble() (attrs []slog.Attr) {
 	return attrs
 }
 
-func (a *accumulator) withRecordAttrs(rec slog.Record) *accumulator {
+func (a *Accumulator) WithRecordAttrs(rec slog.Record) *Accumulator {
 	attrs := getAttrsFromRecord(rec)
-	return a.withAttrs(attrs)
+	return a.WithAttrs(attrs)
 }
 
 func listAny(attrs []slog.Attr) []any {

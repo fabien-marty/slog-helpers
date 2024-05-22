@@ -1,4 +1,4 @@
-package slogh
+package stacktrace
 
 import (
 	"context"
@@ -7,6 +7,8 @@ import (
 	"log/slog"
 	"os"
 	"sync"
+
+	"github.com/fabien-marty/slog-helpers/internal/ansi"
 
 	"github.com/ztrue/tracerr"
 )
@@ -38,6 +40,12 @@ const StackTraceHandlerModePrintWithColors StackTraceHandlerMode = "print-colors
 const StackTraceHandlerModeDefault = StackTraceHandlerModePrint
 
 var stackMutex sync.Mutex
+
+func init() {
+	// not great to do this tuning here but tracerr API could be better IMHO
+	tracerr.DefaultIgnoreFirstFrames = 4
+	tracerr.DefaultIgnoreLastFrames = 2
+}
 
 // StackTraceHandlerOptions is a struct that contains the options for the StackTraceHandler.
 type StackTraceHandlerOptions struct {
@@ -81,6 +89,14 @@ func NewStackTraceHandler(originalHandler slog.Handler, options *StackTraceHandl
 		Handler: originalHandler,
 		opts:    options,
 	}
+}
+
+func (sd *StackTraceHandler) WithGroup(name string) slog.Handler {
+	return NewStackTraceHandler(sd.Handler.WithGroup(name), sd.opts)
+}
+
+func (sd *StackTraceHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+	return NewStackTraceHandler(sd.Handler.WithAttrs(attrs), sd.opts)
 }
 
 // StackTraceEnabled returns true if the stack trace must be added/printed.
@@ -129,7 +145,7 @@ func (sd *StackTraceHandler) afterHandle(slog.Record) error {
 		}
 		stackMutex.Lock()
 		defer stackMutex.Unlock()
-		_, err = sd.opts.WriterForPrint.Write([]byte(ansiRedBackground + ansiWhite + "error log level detected, let's print a stack trace" + ansiReset + "\n" + str + "\n"))
+		_, err = sd.opts.WriterForPrint.Write([]byte(ansi.RedBackground + ansi.White + "error log level detected, let's print a stack trace" + ansi.Reset + "\n" + str + "\n"))
 
 	}
 	return err

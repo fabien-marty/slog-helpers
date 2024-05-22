@@ -3,24 +3,25 @@ package main
 import (
 	"log/slog"
 
-	slogh "github.com/fabien-marty/slog-helpers/pkg"
+	"github.com/fabien-marty/slog-helpers/pkg/configurator"
 )
 
 func main() {
-	logger := slogh.GetLogger(slogh.WithLevel(slog.LevelDebug), slogh.WithLogFormat(slogh.LogFormatTextHuman), slogh.WithStackTrace(true), slogh.WithColors(true))
-	logger2 := logger.With("fab", "ien").WithGroup("xxxx").With("x", 4).WithGroup("yyyy").With("abc", "def")
-	logger2.Warn("foo", slog.String("coucou", "foo"), slog.Group("zzz", slog.String("aaa", "bbb")))
-	logger2.Debug("this is a debug message")
+	logger := configurator.GetLogger(
+		configurator.WithLevel(slog.LevelDebug),
+		configurator.WithLogFormat(configurator.LogFormatTextHuman),
+		configurator.WithStackTrace(true),
+		configurator.WithColors(true),
+		configurator.WithStackTrace(true),
+	)
+	logger = logger.With("rootkey", "rootvalue")
+	logger.Debug("this is a debug message", slog.String("key", "value"))
 	logger.Info("this is an info message")
-	newLogger := logger2.With(slog.Group("anothergroup", slog.String("key", "value"), slog.Group("anotherinsidegroup", slog.String("key", "value"))))
-	newLogger.Info("coucou")
-	foo(logger)
+	anotherLogger := logger.WithGroup("group")
+	anotherLogger.Warn("this is a warning message", slog.Int("intkey", 123))
+	anotherFunction(anotherLogger) // log an error through another function to showcase the stacktrace
 }
 
-func foo(logger *slog.Logger) {
-	bar(logger)
-}
-
-func bar(logger *slog.Logger) {
-	logger.Error("this is an error")
+func anotherFunction(lgr *slog.Logger) {
+	lgr.Error("this is an error with an automatic stackstrace")
 }
