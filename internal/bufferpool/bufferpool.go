@@ -11,12 +11,12 @@ var pool = sync.Pool{
 	},
 }
 
-func GetBuffer() *bytes.Buffer {
+func Get() *bytes.Buffer {
 	b := pool.Get().(*bytes.Buffer)
 	return b
 }
 
-func PutBuffer(b *bytes.Buffer) {
+func Put(b *bytes.Buffer) {
 	b.Reset()
 	pool.Put(b)
 }

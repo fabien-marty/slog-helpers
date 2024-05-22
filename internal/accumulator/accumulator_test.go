@@ -9,7 +9,7 @@ import (
 )
 
 func TestAssemble(t *testing.T) {
-	a := NewAccumulator()
+	a := New()
 	a = a.WithAttrs([]slog.Attr{slog.String("rootkey", "rootvalue")})
 	a = a.WithGroup("group1")
 	a = a.WithAttrs([]slog.Attr{slog.String("group1key", "group1value")})

@@ -21,9 +21,9 @@ func replaceDigits(s string) string {
 }
 
 func TestNewHumanHandlerNoColor(t *testing.T) {
-	buffer := bufferpool.GetBuffer()
-	defer bufferpool.PutBuffer(buffer)
-	h := NewHumanHandler(buffer, &HumandHandlerOptions{
+	buffer := bufferpool.Get()
+	defer bufferpool.Put(buffer)
+	h := New(buffer, &Options{
 		UseColors: false,
 	})
 	logger := slog.New(h)
@@ -40,8 +40,8 @@ func TestNewHumanHandlerNoColor(t *testing.T) {
 }
 
 func TestNewHumanHandlerColors(t *testing.T) {
-	buffer := bufferpool.GetBuffer()
-	h := NewHumanHandler(buffer, &HumandHandlerOptions{
+	buffer := bufferpool.Get()
+	h := New(buffer, &Options{
 		UseColors: true,
 	})
 	logger := slog.New(h)

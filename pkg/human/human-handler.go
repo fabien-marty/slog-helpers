@@ -11,24 +11,24 @@ import (
 	"github.com/fabien-marty/slog-helpers/pkg/external"
 )
 
-var _ slog.Handler = &HumanHandler{}
+var _ slog.Handler = &Handler{}
 
-var humanMutex sync.Mutex
+var mutex sync.Mutex
 
-// HumanHandler is an opaque type that implements the slog.Handler interface.
-type HumanHandler struct {
-	external.ExternalHandler
+// Handler is an opaque type that implements the slog.Handler interface.
+type Handler struct {
+	external.Handler
 }
 
-// HumandHandlerOptions is a struct that contains the options for the HumanHandler.
-type HumandHandlerOptions struct {
+// Options is a struct that contains the options for the HumanHandler.
+type Options struct {
 	slog.HandlerOptions
 	UseColors bool // If true, use colors in the output.
 }
 
-// NewHumanHandler creates a new HumanHandler.
-func NewHumanHandler(w io.Writer, opts *HumandHandlerOptions) *HumanHandler {
-	var callback external.ExternalHandlerStringifiedAttrsFunction
+// New creates a new HumanHandler.
+func New(w io.Writer, opts *Options) *Handler {
+	var callback external.StringifiedAttrsCallback
 	if opts.UseColors {
 		callback = func(time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
 			return handleColor(w, time, level, message, attrs)
@@ -38,8 +38,8 @@ func NewHumanHandler(w io.Writer, opts *HumandHandlerOptions) *HumanHandler {
 			return handleNoColor(w, time, level, message, attrs)
 		}
 	}
-	return &HumanHandler{
-		ExternalHandler: *external.NewExternalHandler(&external.ExternalHandlerOptions{
+	return &Handler{
+		Handler: *external.New(&external.Options{
 			HandlerOptions:      opts.HandlerOptions,
 			StringifiedCallback: callback,
 		}),
@@ -75,8 +75,8 @@ func levelToString(level slog.Level) string {
 }
 
 func handleColor(w io.Writer, time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
-	buffer := bufferpool.GetBuffer()
-	defer bufferpool.PutBuffer(buffer)
+	buffer := bufferpool.Get()
+	defer bufferpool.Put(buffer)
 	ascTime := "              "
 	if !time.IsZero() {
 		ascTime = time.UTC().Format("2006-01-02T15:04:05Z")
@@ -111,15 +111,15 @@ func handleColor(w io.Writer, time time.Time, level slog.Level, message string, 
 		}
 	}
 	buffer.WriteString("\n")
-	humanMutex.Lock()
-	defer humanMutex.Unlock()
+	mutex.Lock()
+	defer mutex.Unlock()
 	_, err := w.Write(buffer.Bytes())
 	return err
 }
 
 func handleNoColor(w io.Writer, time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
-	buffer := bufferpool.GetBuffer()
-	defer bufferpool.PutBuffer(buffer)
+	buffer := bufferpool.Get()
+	defer bufferpool.Put(buffer)
 	ascTime := "              "
 	if !time.IsZero() {
 		ascTime = time.UTC().Format("2006-01-02T15:04:05Z")
@@ -145,8 +145,8 @@ func handleNoColor(w io.Writer, time time.Time, level slog.Level, message string
 		}
 	}
 	buffer.WriteString("\n")
-	humanMutex.Lock()
-	defer humanMutex.Unlock()
+	mutex.Lock()
+	defer mutex.Unlock()
 	_, err := w.Write(buffer.Bytes())
 	return err
 }

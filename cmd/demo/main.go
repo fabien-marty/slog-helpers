@@ -3,16 +3,16 @@ package main
 import (
 	"log/slog"
 
-	"github.com/fabien-marty/slog-helpers/pkg/configurator"
+	"github.com/fabien-marty/slog-helpers/pkg/slogc"
 )
 
 func main() {
-	logger := configurator.GetLogger(
-		configurator.WithLevel(slog.LevelDebug),
-		configurator.WithLogFormat(configurator.LogFormatTextHuman),
-		configurator.WithStackTrace(true),
-		configurator.WithColors(true),
-		configurator.WithStackTrace(true),
+	logger := slogc.GetLogger(
+		slogc.WithLevel(slog.LevelDebug),
+		slogc.WithLogFormat(slogc.LogFormatTextHuman),
+		slogc.WithStackTrace(true),
+		slogc.WithColors(true),
+		slogc.WithStackTrace(true),
 	)
 	logger = logger.With("rootkey", "rootvalue")
 	logger.Debug("this is a debug message", slog.String("key", "value"))

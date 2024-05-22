@@ -16,11 +16,11 @@ import (
 type record map[string]any
 
 func TestStackTraceHandlerAddAttr(t *testing.T) {
-	buffer := bufferpool.GetBuffer()
-	defer bufferpool.PutBuffer(buffer)
+	buffer := bufferpool.Get()
+	defer bufferpool.Put(buffer)
 	jsonHandler := slog.NewJSONHandler(buffer, &slog.HandlerOptions{})
-	h := NewStackTraceHandler(jsonHandler, &StackTraceHandlerOptions{
-		Mode: StackTraceHandlerModeAddAttr,
+	h := New(jsonHandler, &Options{
+		Mode: ModeAddAttr,
 	})
 	logger := slog.New(h)
 	logger.Info("hello world")
@@ -47,9 +47,9 @@ func TestStackTraceHandlerAddAttr(t *testing.T) {
 }
 
 func TestStackTraceHandlerPrint(t *testing.T) {
-	buffer := bufferpool.GetBuffer()
-	defer bufferpool.PutBuffer(buffer)
-	eh := external.NewExternalHandler(&external.ExternalHandlerOptions{
+	buffer := bufferpool.Get()
+	defer bufferpool.Put(buffer)
+	eh := external.New(&external.Options{
 		StringifiedCallback: func(time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
 			buffer.WriteString(level.String() + "/" + message)
 			tmp := []string{}
@@ -60,8 +60,8 @@ func TestStackTraceHandlerPrint(t *testing.T) {
 			return nil
 		},
 	})
-	h := NewStackTraceHandler(eh, &StackTraceHandlerOptions{
-		Mode:           StackTraceHandlerModePrint,
+	h := New(eh, &Options{
+		Mode:           ModePrint,
 		WriterForPrint: buffer,
 	})
 	logger := slog.New(h)
@@ -75,9 +75,9 @@ func TestStackTraceHandlerPrint(t *testing.T) {
 }
 
 func TestStackTraceHandlerPrintWithColors(t *testing.T) {
-	buffer := bufferpool.GetBuffer()
-	defer bufferpool.PutBuffer(buffer)
-	eh := external.NewExternalHandler(&external.ExternalHandlerOptions{
+	buffer := bufferpool.Get()
+	defer bufferpool.Put(buffer)
+	eh := external.New(&external.Options{
 		StringifiedCallback: func(time time.Time, level slog.Level, message string, attrs []external.StringifiedAttr) error {
 			buffer.WriteString(level.String() + "/" + message)
 			tmp := []string{}
@@ -88,8 +88,8 @@ func TestStackTraceHandlerPrintWithColors(t *testing.T) {
 			return nil
 		},
 	})
-	h := NewStackTraceHandler(eh, &StackTraceHandlerOptions{
-		Mode:           StackTraceHandlerModePrintWithColors,
+	h := New(eh, &Options{
+		Mode:           ModePrintWithColors,
 		WriterForPrint: buffer,
 	})
 	logger := slog.New(h)

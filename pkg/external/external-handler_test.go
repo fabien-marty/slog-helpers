@@ -23,7 +23,7 @@ func TestNewExternalHandlerStringified(t *testing.T) {
 		assert.Equal(t, "group.zzz.aaa=bbb", attrs[3].String())
 		return nil
 	}
-	h := NewExternalHandler(&ExternalHandlerOptions{
+	h := New(&Options{
 		StringifiedCallback: callback,
 	})
 	logger := slog.New(h).With(slog.Int("foo", 123)).WithGroup("group").With(slog.String("foo2", "bar2"))
@@ -45,7 +45,7 @@ func TestNewExternalHandlerFlattened(t *testing.T) {
 		assert.Equal(t, "group.zzz.aaa=bbb", attrs[3].String())
 		return nil
 	}
-	h := NewExternalHandler(&ExternalHandlerOptions{
+	h := New(&Options{
 		FlattenedCallback: callback,
 	})
 	logger := slog.New(h).With(slog.Int("foo", 123)).WithGroup("group").With(slog.String("foo2", "bar2"))
@@ -64,7 +64,7 @@ func TestNewExternalHandler(t *testing.T) {
 		assert.Equal(t, "group=[foo2=bar2 foo3=bar3 zzz=[aaa=bbb]]", attrs[1].String())
 		return nil
 	}
-	h := NewExternalHandler(&ExternalHandlerOptions{
+	h := New(&Options{
 		Callback: callback,
 	})
 	logger := slog.New(h).With(slog.Int("foo", 123)).WithGroup("group").With(slog.String("foo2", "bar2"))
@@ -72,7 +72,7 @@ func TestNewExternalHandler(t *testing.T) {
 }
 
 func TestNewExternalHandlerWithoutCallback(t *testing.T) {
-	h := NewExternalHandler(&ExternalHandlerOptions{
+	h := New(&Options{
 		HandlerOptions: slog.HandlerOptions{
 			Level: slog.LevelDebug,
 		},

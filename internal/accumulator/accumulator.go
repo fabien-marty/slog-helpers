@@ -16,9 +16,9 @@ type Accumulator struct {
 	last *payload
 }
 
-// NewAccumulator is a base struct for building slog.Handler that accumulates
+// New is a base struct for building slog.Handler that accumulates
 // attributes and groups and returns them when calling assemble.
-func NewAccumulator() *Accumulator {
+func New() *Accumulator {
 	return &Accumulator{
 		last: &payload{},
 	}
