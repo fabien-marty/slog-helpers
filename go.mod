@@ -19,4 +19,4 @@ require (
 	golang.org/x/sys v0.6.0 // indirect
 )
 
-replace github.com/ztrue/tracerr => ../tracerr
+replace github.com/ztrue/tracerr => github.com/fabien-marty/tracerr v0.0.0-20240521193902-a136106672ba
