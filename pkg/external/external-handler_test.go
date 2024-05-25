@@ -1,7 +1,6 @@
 package external
 
 import (
-	"fmt"
 	"log/slog"
 	"testing"
 	"time"
@@ -12,7 +11,6 @@ import (
 func TestNewExternalHandlerStringified(t *testing.T) {
 	logMessage := "hello world"
 	callback := func(time time.Time, level slog.Level, message string, attrs []StringifiedAttr) error {
-		fmt.Println(attrs)
 		assert.False(t, time.IsZero())
 		assert.Equal(t, slog.LevelInfo, level)
 		assert.Equal(t, logMessage, message)
@@ -33,7 +31,6 @@ func TestNewExternalHandlerStringified(t *testing.T) {
 func TestNewExternalHandlerFlattened(t *testing.T) {
 	logMessage := "hello world"
 	callback := func(time time.Time, level slog.Level, message string, attrs []FlattenedAttr) error {
-		fmt.Println(attrs)
 		assert.False(t, time.IsZero())
 		assert.Equal(t, slog.LevelInfo, level)
 		assert.Equal(t, logMessage, message)
@@ -55,7 +52,6 @@ func TestNewExternalHandlerFlattened(t *testing.T) {
 func TestNewExternalHandler(t *testing.T) {
 	logMessage := "hello world"
 	callback := func(time time.Time, level slog.Level, message string, attrs []slog.Attr) error {
-		fmt.Println(attrs)
 		assert.False(t, time.IsZero())
 		assert.Equal(t, slog.LevelInfo, level)
 		assert.Equal(t, logMessage, message)
@@ -64,6 +60,7 @@ func TestNewExternalHandler(t *testing.T) {
 		assert.Equal(t, "group=[foo2=bar2 foo3=bar3 zzz=[aaa=bbb]]", attrs[1].String())
 		return nil
 	}
+	_ = callback
 	h := New(&Options{
 		Callback: callback,
 	})
@@ -79,4 +76,28 @@ func TestNewExternalHandlerWithoutCallback(t *testing.T) {
 	})
 	logger := slog.New(h)
 	logger.Warn("this is a warning")
+}
+
+func TestNewExternalHandlerMultipleCalls(t *testing.T) {
+	logMessage := "hello world"
+	warnCalled := false
+	callback := func(time time.Time, level slog.Level, message string, attrs []slog.Attr) error {
+		switch level {
+		case slog.LevelInfo:
+			assert.Equal(t, 1, len(attrs))
+		case slog.LevelWarn:
+			assert.Equal(t, 0, len(attrs))
+			warnCalled = true
+		default:
+			panic("unexpected level")
+		}
+		return nil
+	}
+	h := New(&Options{
+		Callback: callback,
+	})
+	logger := slog.New(h)
+	logger.Info(logMessage, slog.String("foo", "bar"))
+	logger.Warn(logMessage)
+	assert.True(t, warnCalled)
 }

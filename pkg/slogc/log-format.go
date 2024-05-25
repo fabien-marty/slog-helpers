@@ -32,7 +32,7 @@ const LogFormatExternal LogFormat = "external"
 const DefaultLogFormat = LogFormatTextHuman
 
 var logFormatEnvVarMutex = sync.RWMutex{}
-var logFormatEnvVar = DefaultLogLevelEnvVar
+var logFormatEnvVar = DefaultLogFormatEnvVar
 
 // SetLogFormatEnvVar sets the environment variable used to define the default log format.
 func SetLogFormatEnvVar(envVar string) {
@@ -46,7 +46,7 @@ func SetLogFormatEnvVar(envVar string) {
 // The log format is case insensitive. If the string is not recognized, the default log format is returned.
 func GetLogFormatFromString(logLevel string) LogFormat {
 	switch strings.ToLower(logLevel) {
-	case "human-console":
+	case "text-human":
 		return LogFormatTextHuman
 	case "text":
 		return LogFormatText

@@ -13,8 +13,17 @@ import (
 	"github.com/ztrue/tracerr"
 )
 
-// KeyNameForModeAddAttrDefault is the default key name for the ModeAddAttr mode.
-const KeyNameForModeAddAttrDefault = "stacktrace"
+// KeyForStackTraceEnabledDefault is the key of a boolean attribute to enable the stack trace for log level < MinimalLevelForStackTraceEnabledEnabled
+//
+// This behavior can be completely change by overriding the StackTraceEnabled method.
+//
+// Note: in the default behavior, this attribute will be automatically removed by this handler.
+const KeyForStackTraceEnabledDefault = "add-stacktrace"
+
+// MinimalLevelForStackTraceEnabledEnabled is the minimal level for which the stack trace is automatically enabled.
+//
+// This behavior can be completely change by overriding the StackTraceEnabled method.
+const MinimalLevelForStackTraceEnabledEnabledDefault = slog.LevelError
 
 // Mode is an enumeration type that defines the possible modes of the StackTraceHandler.
 type Mode string
@@ -39,6 +48,9 @@ const ModePrintWithColors Mode = "print-colors"
 // The default mode of the StackTraceHandler.
 const ModeDefault = ModePrint
 
+// KeyNameForModeAddAttrDefault is the default key name for the ModeAddAttr mode.
+const KeyNameForModeAddAttrDefault = "stacktrace"
+
 var mutex sync.Mutex
 
 func init() {
@@ -50,15 +62,21 @@ func init() {
 // Options is a struct that contains the options for the StackTraceHandler.
 type Options struct {
 	slog.HandlerOptions
-	Mode                  Mode      // The mode of the (stacktrace) Handler.
-	KeyNameForModeAddAttr string    // The key name for the attribute in ModeAddAttr mode.
-	WriterForPrint        io.Writer // The writer to use for ModePrint and ModePrintWithColors (default to stderr).
+	Mode                                    Mode        // The mode of the (stacktrace) Handler.
+	KeyNameForModeAddAttr                   string      // The key name for the attribute in ModeAddAttr mode.
+	KeyForStackTraceEnabled                 string      // The key of a boolean attribute to enable the stack trace
+	MinimalLevelForStackTraceEnabledEnabled *slog.Level // The minimal level for which the stack trace is automatically enabled.
+	WriterForPrint                          io.Writer   // The writer to use for ModePrint and ModePrintWithColors (default to stderr).
 }
 
 // Handler is a slog handler that adds a stack trace to the record (add attribute or print/write).
 //
 // The stack trace is added/printed only if the StackTraceEnabled method returns true.
-// The default behavior is to add the stack trace for records with a level greater or equal to slog.LevelError.
+// The default behavior is to add the stack trace for records with:
+//   - a level greater or equal to slog.LevelError
+//   - (or) a boolean attribute add-stacktrace=true
+//
+// Note: in the default behavior, the attribute add-stacktrace will be automatically removed by this handler.
 //
 // The stack is added as an attribute if the Mode is StackTraceHandlerOptions is ModeAddAttr (great for JSON format for example).
 // The stack can be dumped in a writer (default to stderr) if the Mode is ModePrint or ModePrintWithColors.
@@ -77,13 +95,20 @@ type Handler struct {
 	opts *Options
 }
 
-// New creates a new StackTraceHandler.
+// New creates a new Handler.
 func New(originalHandler slog.Handler, options *Options) slog.Handler {
 	if options.WriterForPrint == nil {
 		options.WriterForPrint = os.Stderr
 	}
 	if options.Mode == "" {
 		options.Mode = ModeDefault
+	}
+	if options.KeyForStackTraceEnabled == "" {
+		options.KeyForStackTraceEnabled = KeyForStackTraceEnabledDefault
+	}
+	if options.MinimalLevelForStackTraceEnabledEnabled == nil {
+		defaultLevel := MinimalLevelForStackTraceEnabledEnabledDefault
+		options.MinimalLevelForStackTraceEnabledEnabled = &defaultLevel
 	}
 	return &Handler{
 		Handler: originalHandler,
@@ -105,8 +130,24 @@ func (sd *Handler) WithAttrs(attrs []slog.Attr) slog.Handler {
 // You can override this method to customize the behavior.
 //
 // Important note: the behavior of this
-func (sd *Handler) StackTraceEnabled(context context.Context, record slog.Record) bool {
-	return record.Level >= slog.LevelError
+func (sd *Handler) StackTraceEnabled(context context.Context, record *slog.Record) bool {
+	var stackStraceEnabled bool
+	newRecord := slog.NewRecord(record.Time, record.Level, record.Message, record.PC)
+	record.Attrs(func(attr slog.Attr) bool {
+		if attr.Key == sd.opts.KeyForStackTraceEnabled {
+			if attr.Value.String() == "true" {
+				stackStraceEnabled = true
+			}
+			return true // we don't add this attribute to the new record
+		}
+		newRecord.AddAttrs(attr)
+		return true
+	})
+	*record = newRecord
+	if sd.opts.MinimalLevelForStackTraceEnabledEnabled != nil && record.Level >= *sd.opts.MinimalLevelForStackTraceEnabledEnabled {
+		stackStraceEnabled = true
+	}
+	return stackStraceEnabled
 }
 
 func (sd *Handler) beforeHandle(record *slog.Record) error {
@@ -135,7 +176,7 @@ func (sd *Handler) afterHandle(slog.Record) error {
 		}
 		mutex.Lock()
 		defer mutex.Unlock()
-		_, err = sd.opts.WriterForPrint.Write([]byte("error log level detected, let's print a stack trace" + "\n" + str + "\n"))
+		_, err = sd.opts.WriterForPrint.Write([]byte("stacktrace enabled, let's print a stack trace" + "\n" + str + "\n"))
 	case ModePrintWithColors:
 		fakeErr := tracerr.Wrap(errors.New(""))
 		if sd.opts.AddSource {
@@ -145,7 +186,7 @@ func (sd *Handler) afterHandle(slog.Record) error {
 		}
 		mutex.Lock()
 		defer mutex.Unlock()
-		_, err = sd.opts.WriterForPrint.Write([]byte(ansi.RedBackground + ansi.White + "error log level detected, let's print a stack trace" + ansi.Reset + "\n" + str + "\n"))
+		_, err = sd.opts.WriterForPrint.Write([]byte(ansi.RedBackground + ansi.White + "stacktrace enabled, let's print a stack trace" + ansi.Reset + "\n" + str + "\n"))
 
 	}
 	return err
@@ -154,7 +195,7 @@ func (sd *Handler) afterHandle(slog.Record) error {
 // Handle forwards the call to the original handler (see constructor) and adds/prints the stack trace if needed.
 func (sd *Handler) Handle(context context.Context, record slog.Record) error {
 	var err error
-	stackTraceEnabled := sd.StackTraceEnabled(context, record)
+	stackTraceEnabled := sd.StackTraceEnabled(context, &record)
 	if stackTraceEnabled {
 		err = sd.beforeHandle(&record)
 		if err != nil {

@@ -60,7 +60,7 @@ func (eh *Handler) WithAttrs(attrs []slog.Attr) slog.Handler {
 }
 
 func (eh *Handler) Handle(context context.Context, record slog.Record) error {
-	var attrs []slog.Attr = eh.Accumulator.WithRecordAttrs(record).Assemble()
+	var attrs []slog.Attr = eh.Accumulator.AssembleWithRecordAttrs(record)
 	if eh.opts.Callback != nil {
 		return eh.opts.Callback(record.Time, record.Level, record.Message, attrs)
 	}

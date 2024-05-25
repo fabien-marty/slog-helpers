@@ -35,13 +35,13 @@ func TestAssemble(t *testing.T) {
 	assert.Equal(t, "group2value", group2Attrs[0].Value.String())
 }
 
-func TestGetAttrsFromRecord(t *testing.T) {
-	r := slog.NewRecord(time.Now(), slog.LevelInfo, "message", uintptr(0))
-	r.AddAttrs(slog.String("key1", "value1"), slog.String("key2", "value2"))
-	attrs := getAttrsFromRecord(r)
+func TestAssembleWithRecordAttrs(t *testing.T) {
+	a := New()
+	a = a.WithAttrs([]slog.Attr{slog.Int("foo", 123)}).WithGroup("group").WithAttrs([]slog.Attr{slog.String("foo2", "bar2")})
+	record := slog.NewRecord(time.Now(), slog.LevelInfo, "hello world", 0)
+	record.AddAttrs(slog.String("foo3", "bar3"), slog.Group("zzz", slog.String("aaa", "bbb")))
+	attrs := a.AssembleWithRecordAttrs(record)
 	assert.Equal(t, 2, len(attrs))
-	assert.Equal(t, "key1", attrs[0].Key)
-	assert.Equal(t, "value1", attrs[0].Value.String())
-	assert.Equal(t, "key2", attrs[1].Key)
-	assert.Equal(t, "value2", attrs[1].Value.String())
+	assert.Equal(t, "foo=123", attrs[0].String())
+	assert.Equal(t, "group=[foo2=bar2 foo3=bar3 zzz=[aaa=bbb]]", attrs[1].String())
 }

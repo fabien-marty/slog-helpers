@@ -2,6 +2,7 @@ package accumulator
 
 import (
 	"log/slog"
+	"slices"
 )
 
 // Note: some MIT Code stolen from https://github.com/cappuccinotm/slogx
@@ -16,12 +17,18 @@ type Accumulator struct {
 	last *payload
 }
 
-// New is a base struct for building slog.Handler that accumulates
-// attributes and groups and returns them when calling assemble.
 func New() *Accumulator {
 	return &Accumulator{
 		last: &payload{},
 	}
+}
+
+func (a *Accumulator) Clone() *Accumulator {
+	return &Accumulator{last: &payload{
+		group:  a.last.group,
+		parent: a.last.parent,
+		attrs:  slices.Clone(a.last.attrs),
+	}}
 }
 
 // WithAttrs returns a new accumulator with the given attributes.
@@ -48,9 +55,8 @@ func (a *Accumulator) Assemble() (attrs []slog.Attr) {
 	return attrs
 }
 
-func (a *Accumulator) WithRecordAttrs(rec slog.Record) *Accumulator {
-	attrs := getAttrsFromRecord(rec)
-	return a.WithAttrs(attrs)
+func (a *Accumulator) AssembleWithRecordAttrs(rec slog.Record) (attrs []slog.Attr) {
+	return a.Clone().WithAttrs(getRecordAttrs(rec)).Assemble()
 }
 
 func listAny(attrs []slog.Attr) []any {
@@ -61,9 +67,8 @@ func listAny(attrs []slog.Attr) []any {
 	return list
 }
 
-// getAttrsFromRecord is an utility function to return all attributes from the given record.
-func getAttrsFromRecord(rec slog.Record) []slog.Attr {
-	var attrs []slog.Attr
+func getRecordAttrs(rec slog.Record) []slog.Attr {
+	attrs := []slog.Attr{}
 	rec.Attrs(func(attr slog.Attr) bool {
 		attrs = append(attrs, attr)
 		return true

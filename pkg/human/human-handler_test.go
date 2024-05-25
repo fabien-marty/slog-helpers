@@ -1,7 +1,6 @@
 package human
 
 import (
-	"fmt"
 	"log/slog"
 	"strings"
 	"testing"
@@ -51,7 +50,6 @@ func TestNewHumanHandlerColors(t *testing.T) {
 	lines := strings.Split(res, "\n")
 	assert.Equal(t, 4, len(lines))
 	assert.Equal(t, 0, len(lines[3]))
-	fmt.Println(lines[0][3:])
 	lines[0] = replaceDigits(lines[0])
 	lines[1] = replaceDigits(lines[1])
 	assert.Equal(t, "▶ \x1b[xxmxxxx-xx-xxTxx:xx:xxZ\x1b[xm \x1b[xxm[INFO ]\x1b[xm \x1b[xmhello world\x1b[xm", lines[0])

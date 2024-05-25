@@ -5,7 +5,7 @@ COVER=0
 CGO_ENABLED=1
 TESTARGS=-race
 COVERARGS=-cover -covermode=atomic -coverprofile=coverage.out
-CMDS=cmd/demo/demo
+CMDS=cmd/slogc-demo1/slogc-demo1 cmd/stacktrace-demo1/stacktrace-demo1 cmd/human-demo1/human-demo1 cmd/external-demo1/external-demo1
 BUILDARGS=
 PKGSOURCES:=$(shell find pkg -type f -name '*.go' 2>/dev/null)
 INTERNALSOURCES:=$(shell find internal -type f -name '*.go' 2>/dev/null)
@@ -15,7 +15,16 @@ default: help
 .PHONY: build
 build: $(CMDS) ## Build Go binaries
 
-cmd/demo/demo: $(shell find cmd/demo -type f -name '*.go') $(PKGSOURCES) $(INTERNALSOURCES)
+cmd/slogc-demo1/slogc-demo1: $(shell find cmd/slogc-demo1 -type f -name '*.go') $(PKGSOURCES) $(INTERNALSOURCES)
+	cd `dirname $@` && go build $(BUILDARGS) -o `basename $@`
+
+cmd/stacktrace-demo1/stacktrace-demo1: $(shell find cmd/stacktrace-demo1 -type f -name '*.go') $(PKGSOURCES) $(INTERNALSOURCES)
+	cd `dirname $@` && go build $(BUILDARGS) -o `basename $@`
+
+cmd/human-demo1/human-demo1: $(shell find cmd/human-demo1 -type f -name '*.go') $(PKGSOURCES) $(INTERNALSOURCES)
+	cd `dirname $@` && go build $(BUILDARGS) -o `basename $@`
+
+cmd/external-demo1/external-demo1: $(shell find cmd/external-demo1 -type f -name '*.go') $(PKGSOURCES) $(INTERNALSOURCES)
 	cd `dirname $@` && go build $(BUILDARGS) -o `basename $@`
 
 .PHONY: gofmt
@@ -102,6 +111,13 @@ lint-python: tmp/python_venv/bin/activate ## Lint the python code
 	else \
 		source tmp/python_venv/bin/activate && set -x; ruff check --no-fix .;\
 	fi
+
+doc: build tmp/python_venv/bin/activate ## Generate the documentation
+	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/stacktrace-demo1/stacktrace-demo1" --lines 22 --columns 120 ./docs/stacktrace-demo1.svg
+	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/human-demo1/human-demo1" --lines 10 --columns 120 ./docs/human-demo1.svg
+	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/external-demo1/external-demo1" --lines 10 --columns 120 ./docs/external-demo1.svg
+	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/slogc-demo1/slogc-demo1" --lines 28 --columns 120 ./docs/slogc-demo1.svg
+	source tmp/python_venv/bin/activate && jinja-tree .
 
 .PHONY: help
 help::
