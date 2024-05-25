@@ -76,5 +76,5 @@
 #### Output (with env var `LOG_FORMAT=json`)
 
 ```json
-{{ "./cmd/slogc-demo1/json.sh"|shell() }}
+{{ "./cmd/slogc-demo2/json-gcp.sh"|shell() }}
 ```

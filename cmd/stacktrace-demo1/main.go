@@ -27,5 +27,7 @@ func main() {
 }
 
 func funcToShowcaseTheStackTrace(logger *slog.Logger) {
-	logger.Warn("this is a warning but with a stack trace", slog.Bool("add-stacktrace", true))
+	logger.Warn("this is a warning but with a stack trace",
+		slog.Bool("add-stacktrace", true), // force stacktrace add/dump for this message
+	)
 }

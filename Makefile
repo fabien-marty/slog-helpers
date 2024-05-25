@@ -113,7 +113,7 @@ lint-python: tmp/python_venv/bin/activate ## Lint the python code
 	fi
 
 doc: build tmp/python_venv/bin/activate ## Generate the documentation
-	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/stacktrace-demo1/stacktrace-demo1" --lines 22 --columns 120 ./docs/stacktrace-demo1.svg
+	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/stacktrace-demo1/stacktrace-demo1" --lines 24 --columns 120 ./docs/stacktrace-demo1.svg
 	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/human-demo1/human-demo1" --lines 10 --columns 120 ./docs/human-demo1.svg
 	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/external-demo1/external-demo1" --lines 10 --columns 120 ./docs/external-demo1.svg
 	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/slogc-demo1/slogc-demo1" --lines 28 --columns 120 ./docs/slogc-demo1.svg
