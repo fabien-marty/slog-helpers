@@ -83,7 +83,7 @@ var DefaultLogDestination = LogDestinationStderr
 ```
 
 <a name="GetDefaultLogLevel"></a>
-## func [GetDefaultLogLevel](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-level.go#L49>)
+## func [GetDefaultLogLevel](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-level.go#L49>)
 
 ```go
 func GetDefaultLogLevel() slog.Level
@@ -94,7 +94,7 @@ GetDefaultLogLevel returns the default log level.
 The default log level is defined by the environment variable LOG\_LEVEL. If the environment variable is not set or empty, the default log level is INFO.
 
 <a name="GetLogLevelFromString"></a>
-## func [GetLogLevelFromString](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-level.go#L31>)
+## func [GetLogLevelFromString](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-level.go#L31>)
 
 ```go
 func GetLogLevelFromString(logLevel string) slog.Level
@@ -105,7 +105,7 @@ GetLogLevelFromString returns the log level from a string.
 The log level is case insensitive. If the string is not recognized, the default log level is returned.
 
 <a name="GetLogger"></a>
-## func [GetLogger](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L145>)
+## func [GetLogger](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L145>)
 
 ```go
 func GetLogger(opts ...LoggerOption) *slog.Logger
@@ -116,7 +116,7 @@ GetLogger creates a new configured logger with the given options.
 Hint for your IDE: all LoggerOption functions starts with "With".
 
 <a name="NewLogSlogAdapter"></a>
-## func [NewLogSlogAdapter](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-adapter.go#L11>)
+## func [NewLogSlogAdapter](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-adapter.go#L11>)
 
 ```go
 func NewLogSlogAdapter(originalLogger *log.Logger) *slog.Logger
@@ -125,7 +125,7 @@ func NewLogSlogAdapter(originalLogger *log.Logger) *slog.Logger
 
 
 <a name="SetDefaultLogger"></a>
-## func [SetDefaultLogger](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L222>)
+## func [SetDefaultLogger](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L222>)
 
 ```go
 func SetDefaultLogger(opts ...LoggerOption)
@@ -136,7 +136,7 @@ SetDefaultLogger configures a new logger and sets it as the default logger to be
 This is the same than a GetLogger call followed by a slog.SetDefault call. See GetLogger
 
 <a name="SetLogDestinationEnvVar"></a>
-## func [SetLogDestinationEnvVar](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-destination.go#L31>)
+## func [SetLogDestinationEnvVar](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-destination.go#L31>)
 
 ```go
 func SetLogDestinationEnvVar(envVar string)
@@ -145,7 +145,7 @@ func SetLogDestinationEnvVar(envVar string)
 SetLogDestinationEnvVar sets the environment variable used to define the default log destination.
 
 <a name="SetLogFormatEnvVar"></a>
-## func [SetLogFormatEnvVar](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-format.go#L38>)
+## func [SetLogFormatEnvVar](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-format.go#L38>)
 
 ```go
 func SetLogFormatEnvVar(envVar string)
@@ -154,7 +154,7 @@ func SetLogFormatEnvVar(envVar string)
 SetLogFormatEnvVar sets the environment variable used to define the default log format.
 
 <a name="SetLogLevelEnvVar"></a>
-## func [SetLogLevelEnvVar](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-level.go#L22>)
+## func [SetLogLevelEnvVar](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-level.go#L22>)
 
 ```go
 func SetLogLevelEnvVar(envVar string)
@@ -163,7 +163,7 @@ func SetLogLevelEnvVar(envVar string)
 SetLogLevelEnvVar sets the environment variable used to define the default log level.
 
 <a name="LogDestination"></a>
-## type [LogDestination](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-destination.go#L11>)
+## type [LogDestination](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-destination.go#L11>)
 
 LogDestination represents the destination of the logs.
 
@@ -184,7 +184,7 @@ var LogDestinationStdout LogDestination = "stdout"
 ```
 
 <a name="GetDefaultLogDestination"></a>
-### func [GetDefaultLogDestination](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-destination.go#L54>)
+### func [GetDefaultLogDestination](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-destination.go#L54>)
 
 ```go
 func GetDefaultLogDestination() LogDestination
@@ -195,7 +195,7 @@ GetDefaultLogDestination returns the default log destination.
 The default log destination is defined by the environment variable LOG\_DESTINATION. If the environment variable is not set or empty, the default log destination is stderr.
 
 <a name="GetLogDestinationFromString"></a>
-### func [GetLogDestinationFromString](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-destination.go#L40>)
+### func [GetLogDestinationFromString](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-destination.go#L40>)
 
 ```go
 func GetLogDestinationFromString(logDestination string) LogDestination
@@ -206,7 +206,7 @@ GetLogDestinationFromString returns the log destination from a string.
 The log destination is case insensitive. If the string is not recognized, the default log destination is returned.
 
 <a name="LogFormat"></a>
-## type [LogFormat](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-format.go#L9>)
+## type [LogFormat](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-format.go#L9>)
 
 
 
@@ -245,7 +245,7 @@ const LogFormatTextHuman LogFormat = "text-human"
 ```
 
 <a name="GetDefaultLogFormat"></a>
-### func [GetDefaultLogFormat](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-format.go#L67>)
+### func [GetDefaultLogFormat](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-format.go#L67>)
 
 ```go
 func GetDefaultLogFormat() LogFormat
@@ -256,7 +256,7 @@ GetDefaultLogFormat returns the default log format.
 The default log format is defined by the environment variable LOG\_FORMAT. If the environment variable is not set or empty, the default log format is human\-text.
 
 <a name="GetLogFormatFromString"></a>
-### func [GetLogFormatFromString](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/log-format.go#L47>)
+### func [GetLogFormatFromString](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/log-format.go#L47>)
 
 ```go
 func GetLogFormatFromString(logLevel string) LogFormat
@@ -267,7 +267,7 @@ GetLogFormatFromString returns the log format from a string.
 The log format is case insensitive. If the string is not recognized, the default log format is returned.
 
 <a name="LoggerOption"></a>
-## type [LoggerOption](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L37>)
+## type [LoggerOption](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L37>)
 
 LoggerOption is a type that defines the options for the logger.
 
@@ -278,7 +278,7 @@ type LoggerOption func(options *loggerOptions) error
 ```
 
 <a name="WithColors"></a>
-### func [WithColors](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L86>)
+### func [WithColors](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L86>)
 
 ```go
 func WithColors(flag bool) LoggerOption
@@ -289,7 +289,7 @@ WithColors is an option that sets if the logger should use colors.
 If not used, the use of colors is automatic \(depending on the terminal connected to the logger destination\).
 
 <a name="WithDestination"></a>
-### func [WithDestination](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L50>)
+### func [WithDestination](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L50>)
 
 ```go
 func WithDestination(destination LogDestination) LoggerOption
@@ -300,7 +300,7 @@ WithDestination is an option that sets the destination of the logger.
 Note: you can also use WithDestinationWriter to set a custom writer.
 
 <a name="WithDestinationWriter"></a>
-### func [WithDestinationWriter](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L60>)
+### func [WithDestinationWriter](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L60>)
 
 ```go
 func WithDestinationWriter(destinationWriter io.Writer) LoggerOption
@@ -311,7 +311,7 @@ WithDestinationWriter is an option that sets the writer of the logger.
 Note: it overrides the destination set by WithDestination.
 
 <a name="WithExternalCallback"></a>
-### func [WithExternalCallback](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L93>)
+### func [WithExternalCallback](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L93>)
 
 ```go
 func WithExternalCallback(callback external.Callback) LoggerOption
@@ -320,7 +320,7 @@ func WithExternalCallback(callback external.Callback) LoggerOption
 
 
 <a name="WithExternalFlattenedAttrsCallback"></a>
-### func [WithExternalFlattenedAttrsCallback](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L100>)
+### func [WithExternalFlattenedAttrsCallback](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L100>)
 
 ```go
 func WithExternalFlattenedAttrsCallback(callback external.FlattenedAttrsCallback) LoggerOption
@@ -329,7 +329,7 @@ func WithExternalFlattenedAttrsCallback(callback external.FlattenedAttrsCallback
 
 
 <a name="WithExternalStringifiedAttrsCallback"></a>
-### func [WithExternalStringifiedAttrsCallback](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L107>)
+### func [WithExternalStringifiedAttrsCallback](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L107>)
 
 ```go
 func WithExternalStringifiedAttrsCallback(callback external.StringifiedAttrsCallback) LoggerOption
@@ -338,7 +338,7 @@ func WithExternalStringifiedAttrsCallback(callback external.StringifiedAttrsCall
 
 
 <a name="WithLevel"></a>
-### func [WithLevel](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L40>)
+### func [WithLevel](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L40>)
 
 ```go
 func WithLevel(level slog.Level) LoggerOption
@@ -347,7 +347,7 @@ func WithLevel(level slog.Level) LoggerOption
 WithLevel is an option that sets the level of the logger.
 
 <a name="WithLogFormat"></a>
-### func [WithLogFormat](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L68>)
+### func [WithLogFormat](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L68>)
 
 ```go
 func WithLogFormat(format LogFormat) LoggerOption
@@ -356,7 +356,7 @@ func WithLogFormat(format LogFormat) LoggerOption
 WithLogFormat is an option that sets the format of the logger.
 
 <a name="WithStackTrace"></a>
-### func [WithStackTrace](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/slogc/logger.go#L76>)
+### func [WithStackTrace](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/slogc/logger.go#L76>)
 
 ```go
 func WithStackTrace(flag bool) LoggerOption

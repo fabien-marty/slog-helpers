@@ -24,7 +24,7 @@ import "github.com/fabien-marty/slog-helpers/pkg/external"
 
 
 <a name="Callback"></a>
-## type [Callback](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L14>)
+## type [Callback](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L14>)
 
 Callback is a function that handles nearly untouched slog log records.
 
@@ -33,7 +33,7 @@ type Callback func(time time.Time, level slog.Level, message string, attrs []slo
 ```
 
 <a name="FlattenedAttr"></a>
-## type [FlattenedAttr](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/flattened-attr.go#L10-L12>)
+## type [FlattenedAttr](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/flattened-attr.go#L10-L12>)
 
 FlattenedAttr is a struct that represents a flattened attribute.
 
@@ -49,7 +49,7 @@ type FlattenedAttr struct {
 ```
 
 <a name="FlattenedAttrsCallback"></a>
-## type [FlattenedAttrsCallback](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L17>)
+## type [FlattenedAttrsCallback](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L17>)
 
 FlattenedAttrsCallback is a function that handles slog log records with flattened attributes \(no group, prefixed keys with group names\).
 
@@ -58,7 +58,7 @@ type FlattenedAttrsCallback func(time time.Time, level slog.Level, message strin
 ```
 
 <a name="Handler"></a>
-## type [Handler](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L31-L34>)
+## type [Handler](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L31-L34>)
 
 Handler is an opaque type that implements the slog.Handler interface.
 
@@ -70,7 +70,7 @@ type Handler struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L37>)
+### func [New](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L37>)
 
 ```go
 func New(opts *Options) *Handler
@@ -79,7 +79,7 @@ func New(opts *Options) *Handler
 New creates a new ExternalHandler.
 
 <a name="Handler.Enabled"></a>
-### func \(\*Handler\) [Enabled](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L44>)
+### func \(\*Handler\) [Enabled](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L44>)
 
 ```go
 func (eh *Handler) Enabled(context context.Context, level slog.Level) bool
@@ -88,7 +88,7 @@ func (eh *Handler) Enabled(context context.Context, level slog.Level) bool
 
 
 <a name="Handler.Handle"></a>
-### func \(\*Handler\) [Handle](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L62>)
+### func \(\*Handler\) [Handle](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L62>)
 
 ```go
 func (eh *Handler) Handle(context context.Context, record slog.Record) error
@@ -97,7 +97,7 @@ func (eh *Handler) Handle(context context.Context, record slog.Record) error
 
 
 <a name="Handler.WithAttrs"></a>
-### func \(\*Handler\) [WithAttrs](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L57>)
+### func \(\*Handler\) [WithAttrs](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L57>)
 
 ```go
 func (eh *Handler) WithAttrs(attrs []slog.Attr) slog.Handler
@@ -106,7 +106,7 @@ func (eh *Handler) WithAttrs(attrs []slog.Attr) slog.Handler
 
 
 <a name="Handler.WithGroup"></a>
-### func \(\*Handler\) [WithGroup](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L52>)
+### func \(\*Handler\) [WithGroup](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L52>)
 
 ```go
 func (eh *Handler) WithGroup(group string) slog.Handler
@@ -115,7 +115,7 @@ func (eh *Handler) WithGroup(group string) slog.Handler
 
 
 <a name="Options"></a>
-## type [Options](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L23-L28>)
+## type [Options](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L23-L28>)
 
 Options is a struct that contains the options for the ExternalHandler.
 
@@ -129,7 +129,7 @@ type Options struct {
 ```
 
 <a name="StringifiedAttr"></a>
-## type [StringifiedAttr](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/stringified-attr.go#L6-L9>)
+## type [StringifiedAttr](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/stringified-attr.go#L6-L9>)
 
 StringifiedAttr is a struct that represents a stringified slog.Attr attribute.
 
@@ -143,7 +143,7 @@ type StringifiedAttr struct {
 ```
 
 <a name="StringifiedAttr.String"></a>
-### func \(StringifiedAttr\) [String](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/stringified-attr.go#L27>)
+### func \(StringifiedAttr\) [String](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/stringified-attr.go#L27>)
 
 ```go
 func (sa StringifiedAttr) String() string
@@ -152,7 +152,7 @@ func (sa StringifiedAttr) String() string
 String returns the string representation of the StringifiedAttr as "key=value".
 
 <a name="StringifiedAttrsCallback"></a>
-## type [StringifiedAttrsCallback](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/external/external-handler.go#L20>)
+## type [StringifiedAttrsCallback](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L20>)
 
 StringifiedAttrsCallback is a function that handles slog log records with stringified and flattened attributes \(no group, prefixed keys with group names, values resolved as strings\).
 

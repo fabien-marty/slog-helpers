@@ -10,6 +10,8 @@ BUILDARGS=
 PKGSOURCES:=$(shell find pkg -type f -name '*.go' 2>/dev/null)
 INTERNALSOURCES:=$(shell find internal -type f -name '*.go' 2>/dev/null)
 GOMARKDOC_CHECK_ARG=
+REPOSITORY_URL=https://github.com/fabien-marty/stlog-helpers
+REPOSITORY_DEFAULT_BRANCH=main
 
 default: help
 
@@ -125,10 +127,10 @@ install_gomarkdoc:
 .PHONY: doc-api
 doc-api:
 	@gomarkdoc --help >/dev/null 2>&1 || $(MAKE) install_gomarkdoc
-	cd pkg/stacktrace && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-stacktrace.md 
-	cd pkg/external && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-external.md 
-	cd pkg/human && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-human.md 
-	cd pkg/slogc && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-slogc.md 
+	cd pkg/stacktrace && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-stacktrace.md --repository.url $(REPOSITORY_URL) --repository.default-branch $(REPOSITORY_DEFAULT_BRANCH)
+	cd pkg/external && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-external.md --repository.url $(REPOSITORY_URL) --repository.default-branch $(REPOSITORY_DEFAULT_BRANCH)
+	cd pkg/human && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-human.md --repository.url $(REPOSITORY_URL) --repository.default-branch $(REPOSITORY_DEFAULT_BRANCH)
+	cd pkg/slogc && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-slogc.md --repository.url $(REPOSITORY_URL) --repository.default-branch $(REPOSITORY_DEFAULT_BRANCH)
 
 .PHONY: doc-screenshots
 doc-screenshots: build tmp/python_venv/bin/activate ## Generate the documentation

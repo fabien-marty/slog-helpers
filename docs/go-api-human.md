@@ -14,7 +14,7 @@ import "github.com/fabien-marty/slog-helpers/pkg/human"
 
 
 <a name="Handler"></a>
-## type [Handler](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/human/human-handler.go#L19-L21>)
+## type [Handler](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/human/human-handler.go#L19-L21>)
 
 Handler is an opaque type that implements the slog.Handler interface.
 
@@ -25,7 +25,7 @@ type Handler struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/human/human-handler.go#L30>)
+### func [New](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/human/human-handler.go#L30>)
 
 ```go
 func New(w io.Writer, opts *Options) *Handler
@@ -34,7 +34,7 @@ func New(w io.Writer, opts *Options) *Handler
 New creates a new HumanHandler.
 
 <a name="Options"></a>
-## type [Options](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/human/human-handler.go#L24-L27>)
+## type [Options](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/human/human-handler.go#L24-L27>)
 
 Options is a struct that contains the options for the HumanHandler.
 

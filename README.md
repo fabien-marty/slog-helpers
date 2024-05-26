@@ -228,7 +228,7 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
 
 ```json
 {
-    "time": "2024-05-26T10:23:15.049099+02:00",
+    "time": "2024-05-26T10:31:06.137736+02:00",
     "severity": "DEBUG",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.main",
@@ -242,7 +242,7 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
     "key": "value"
 }
 {
-    "time": "2024-05-26T10:23:15.049224+02:00",
+    "time": "2024-05-26T10:31:06.137866+02:00",
     "severity": "INFO",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.main",
@@ -255,7 +255,7 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
     }
 }
 {
-    "time": "2024-05-26T10:23:15.049236+02:00",
+    "time": "2024-05-26T10:31:06.137879+02:00",
     "severity": "WARNING",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.main",
@@ -269,7 +269,7 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
     "intkey": 123
 }
 {
-    "time": "2024-05-26T10:23:15.049239+02:00",
+    "time": "2024-05-26T10:31:06.137882+02:00",
     "severity": "WARNING",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.funcToShowcaseTheStackTrace",

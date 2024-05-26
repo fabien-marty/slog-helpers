@@ -78,7 +78,7 @@ const ModeDefault = ModePrint
 ```
 
 <a name="New"></a>
-## func [New](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L79>)
+## func [New](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L79>)
 
 ```go
 func New(originalHandler slog.Handler, options *Options) slog.Handler
@@ -87,7 +87,7 @@ func New(originalHandler slog.Handler, options *Options) slog.Handler
 New creates a new Handler.
 
 <a name="Handler"></a>
-## type [Handler](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L73-L76>)
+## type [Handler](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L73-L76>)
 
 Handler is a slog handler that adds a stack trace to the record \(add attribute or print/write\).
 
@@ -99,7 +99,7 @@ type Handler struct {
 ```
 
 <a name="Handler.Handle"></a>
-### func \(\*Handler\) [Handle](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L176>)
+### func \(\*Handler\) [Handle](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L176>)
 
 ```go
 func (sd *Handler) Handle(context context.Context, record slog.Record) error
@@ -108,7 +108,7 @@ func (sd *Handler) Handle(context context.Context, record slog.Record) error
 Handle forwards the call to the original handler \(see constructor\) and adds/prints the stack trace if needed.
 
 <a name="Handler.StackTraceEnabled"></a>
-### func \(\*Handler\) [StackTraceEnabled](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L113>)
+### func \(\*Handler\) [StackTraceEnabled](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L113>)
 
 ```go
 func (sd *Handler) StackTraceEnabled(context context.Context, record *slog.Record) bool
@@ -121,7 +121,7 @@ The default behavior is to add the stack trace for records with a level greater 
 Important note: the behavior of this
 
 <a name="Handler.WithAttrs"></a>
-### func \(\*Handler\) [WithAttrs](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L103>)
+### func \(\*Handler\) [WithAttrs](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L103>)
 
 ```go
 func (sd *Handler) WithAttrs(attrs []slog.Attr) slog.Handler
@@ -130,7 +130,7 @@ func (sd *Handler) WithAttrs(attrs []slog.Attr) slog.Handler
 
 
 <a name="Handler.WithGroup"></a>
-### func \(\*Handler\) [WithGroup](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L99>)
+### func \(\*Handler\) [WithGroup](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L99>)
 
 ```go
 func (sd *Handler) WithGroup(name string) slog.Handler
@@ -139,7 +139,7 @@ func (sd *Handler) WithGroup(name string) slog.Handler
 
 
 <a name="Mode"></a>
-## type [Mode](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L29>)
+## type [Mode](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L29>)
 
 Mode is an enumeration type that defines the possible modes of the StackTraceHandler.
 
@@ -176,7 +176,7 @@ const ModePrintWithColors Mode = "print-colors"
 ```
 
 <a name="Options"></a>
-## type [Options](<https://github.com/fabien-marty/slog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L63-L70>)
+## type [Options](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/stacktrace/stacktrace-handler.go#L63-L70>)
 
 Options is a struct that contains the options for the StackTraceHandler.
 
