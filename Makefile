@@ -9,6 +9,7 @@ CMDS=cmd/slogc-demo1/slogc-demo1 cmd/stacktrace-demo1/stacktrace-demo1 cmd/human
 BUILDARGS=
 PKGSOURCES:=$(shell find pkg -type f -name '*.go' 2>/dev/null)
 INTERNALSOURCES:=$(shell find internal -type f -name '*.go' 2>/dev/null)
+GOMARKDOC_CHECK_ARG=
 
 default: help
 
@@ -72,7 +73,11 @@ html-coverage: ## Build html coverage
 	go tool cover -html coverage.out -o cover.html
 
 .PHONY: lint
-lint: govet gofmt golangcilint lint-python ## Lint the code (also fix the code if FIX=1, default)
+lint: govet gofmt golangcilint lint-python lint-doc-api ## Lint the code (also fix the code if FIX=1, default)
+
+.PHONY: lint-doc-api
+lint-doc-api:
+	@$(MAKE) GOMARKDOC_CHECK_ARG=--check doc-api || (echo "ERROR doc-api outdated => maybe launch 'make api-doc' to fix it?"; exit 1)
 
 tmp/bin/golangci-lint:
 	@mkdir -p tmp/bin
@@ -112,12 +117,32 @@ lint-python: tmp/python_venv/bin/activate ## Lint the python code
 		source tmp/python_venv/bin/activate && set -x; ruff check --no-fix .;\
 	fi
 
-doc: build tmp/python_venv/bin/activate ## Generate the documentation
+.PHONY: install_gomarkdoc
+install_gomarkdoc:
+	go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
+	@gomarkdoc --help >/dev/null || ( echo "ERROR: can't install gomarkdoc"; exit 1 )
+
+.PHONY: doc-api
+doc-api:
+	@gomarkdoc --help >/dev/null 2>&1 || $(MAKE) install_gomarkdoc
+	cd pkg/stacktrace && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-stacktrace.md 
+	cd pkg/external && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-external.md 
+	cd pkg/human && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-human.md 
+	cd pkg/slogc && gomarkdoc $(GOMARKDOC_CHECK_ARG) --output ../../docs/go-api-slogc.md 
+
+.PHONY: doc-screenshots
+doc-screenshots: build tmp/python_venv/bin/activate ## Generate the documentation
 	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/stacktrace-demo1/stacktrace-demo1" --lines 24 --columns 120 ./docs/stacktrace-demo1.svg
 	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/human-demo1/human-demo1" --lines 10 --columns 120 ./docs/human-demo1.svg
 	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/external-demo1/external-demo1" --lines 10 --columns 120 ./docs/external-demo1.svg
 	source tmp/python_venv/bin/activate && ./docs/termtosvg.py --command "./cmd/slogc-demo1/slogc-demo1" --lines 28 --columns 120 ./docs/slogc-demo1.svg
+
+.PHONY: doc-readme
+doc-readme: build tmp/python_venv/bin/activate 
 	source tmp/python_venv/bin/activate && jinja-tree .
+
+.PHONY: doc
+doc: doc-api doc-readme doc-screenshots ## Generate the documentation
 
 .PHONY: help
 help::

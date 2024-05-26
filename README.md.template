@@ -37,7 +37,12 @@
 
 ![stracktrace handler output](./docs/stacktrace-demo1.svg)
 
-### Usage (2️⃣ Console handler)
+#### To go further with this handler
+
+To go further with this `stacktrace` handler and have a look at all available features,
+please read [the reference documentation](docs/go-api-stacktrace.md).
+
+### Usage (2️⃣ Human handler)
 
 #### Source
 
@@ -48,6 +53,11 @@
 #### Output
 
 ![human handler output](./docs/human-demo1.svg)
+
+#### To go further with this handler
+
+To go further with this `stacktrace` handler and have a look at all available features,
+please read [the reference documentation](docs/go-api-human.md).
 
 ### Usage (3️⃣ External handler)
 
@@ -61,6 +71,11 @@
 
 ![external handler output](./docs/external-demo1.svg)
 
+#### To go further with this handler
+
+To go further with this `stacktrace` handler and have a look at all available features,
+please read [the reference documentation](docs/go-api-external.md).
+
 ### Usage (4️⃣ All in one with the setup helper) 
 
 #### Source
@@ -73,7 +88,10 @@
 
 ![slogc handler output](./docs/slogc-demo1.svg)
 
-#### Output (with env var `LOG_FORMAT=json`)
+#### Output (same code but with env var `LOG_FORMAT=json-gcp`)
+
+> [!TIP]  
+> Use `LOG_FORMAT=json-gcp` env var of `WithFormat("json-gcp")` in code to have a JSON output compatible with Google Cloud Platform Logging
 
 ```json
 {{ "./cmd/slogc-demo2/json-gcp.sh"|shell() }}

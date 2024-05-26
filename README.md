@@ -70,7 +70,12 @@ func funcToShowcaseTheStackTrace(logger *slog.Logger) {
 
 ![stracktrace handler output](./docs/stacktrace-demo1.svg)
 
-### Usage (2️⃣ Console handler)
+#### To go further with this handler
+
+To go further with this `stacktrace` handler and have a look at all available features,
+please read [the reference documentation](docs/go-api-stacktrace.md).
+
+### Usage (2️⃣ Human handler)
 
 #### Source
 
@@ -112,6 +117,11 @@ func main() {
 #### Output
 
 ![human handler output](./docs/human-demo1.svg)
+
+#### To go further with this handler
+
+To go further with this `stacktrace` handler and have a look at all available features,
+please read [the reference documentation](docs/go-api-human.md).
 
 ### Usage (3️⃣ External handler)
 
@@ -163,6 +173,11 @@ func main() {
 
 ![external handler output](./docs/external-demo1.svg)
 
+#### To go further with this handler
+
+To go further with this `stacktrace` handler and have a look at all available features,
+please read [the reference documentation](docs/go-api-external.md).
+
 ### Usage (4️⃣ All in one with the setup helper) 
 
 #### Source
@@ -206,11 +221,14 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
 
 ![slogc handler output](./docs/slogc-demo1.svg)
 
-#### Output (with env var `LOG_FORMAT=json`)
+#### Output (same code but with env var `LOG_FORMAT=json-gcp`)
+
+> [!TIP]  
+> Use `LOG_FORMAT=json-gcp` env var of `WithFormat("json-gcp")` in code to have a JSON output compatible with Google Cloud Platform Logging
 
 ```json
 {
-    "time": "2024-05-25T14:10:32.785168+02:00",
+    "time": "2024-05-26T10:23:15.049099+02:00",
     "severity": "DEBUG",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.main",
@@ -224,7 +242,7 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
     "key": "value"
 }
 {
-    "time": "2024-05-25T14:10:32.785239+02:00",
+    "time": "2024-05-26T10:23:15.049224+02:00",
     "severity": "INFO",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.main",
@@ -237,7 +255,7 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
     }
 }
 {
-    "time": "2024-05-25T14:10:32.785247+02:00",
+    "time": "2024-05-26T10:23:15.049236+02:00",
     "severity": "WARNING",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.main",
@@ -251,7 +269,7 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
     "intkey": 123
 }
 {
-    "time": "2024-05-25T14:10:32.785251+02:00",
+    "time": "2024-05-26T10:23:15.049239+02:00",
     "severity": "WARNING",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.funcToShowcaseTheStackTrace",

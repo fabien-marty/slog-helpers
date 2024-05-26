@@ -70,26 +70,6 @@ type Options struct {
 }
 
 // Handler is a slog handler that adds a stack trace to the record (add attribute or print/write).
-//
-// The stack trace is added/printed only if the StackTraceEnabled method returns true.
-// The default behavior is to add the stack trace for records with:
-//   - a level greater or equal to slog.LevelError
-//   - (or) a boolean attribute add-stacktrace=true
-//
-// Note: in the default behavior, the attribute add-stacktrace will be automatically removed by this handler.
-//
-// The stack is added as an attribute if the Mode is StackTraceHandlerOptions is ModeAddAttr (great for JSON format for example).
-// The stack can be dumped in a writer (default to stderr) if the Mode is ModePrint or ModePrintWithColors.
-//
-// Full example:
-//
-//	handler := slog.NewTextHandler(os.Stderr)
-//	stackHandler := New(handler, &Options{
-//		Mode: ModePrintWithColors,
-//	})
-//	logger := slog.New(stackHandler)
-//	logger.Info("no stack trace")
-//	logger.Error("this is an error, let's print a stack trace")
 type Handler struct {
 	slog.Handler
 	opts *Options
