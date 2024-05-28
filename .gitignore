@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+/cmd/demo/demo
+/cmd/stacktrace-demo1/stacktrace-demo1
+/cmd/human-demo1/human-demo1
+/cmd/external-demo1/external-demo1
+/cmd/slogc-demo1/slogc-demo1
+/tmp

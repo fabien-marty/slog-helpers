@@ -1,0 +1,98 @@
+# slog-helpers
+
+[Golang slog](https://pkg.go.dev/log/slog) structured logging library added in Go 1.21 is a great library. However, it lacks some helpers that are useful in practice. This library provides some of those helpers.
+
+## Principles
+
+- we want to stick as closely as possible to slog standards and objects without creating new concepts, types or interfaces
+- we want to provide a kind of duality:
+    - some generic and configurable handlers you can use in plenty of contexts
+    - an opinionated [twelve-factor app inspired](https://12factor.net/) "setup helper" that will make a full-featured [slog.Logger](https://pkg.go.dev/log/slog#Logger) with a minimal amount of boilerplate code (by using environment variables and opinionated choices).
+
+## Features
+
+- 1️⃣ a ready-to-use [slog.Handler](https://pkg.go.dev/log/slog#Handler) that prints (or embeds in a [slog.Attr](https://pkg.go.dev/log/slog#Attr) for JSON output for example) a stacktrace when an error is logged with `ERROR` level or with a `stacktrace=true` attribute
+- 2️⃣ a ready-to-use [slog.Handler](https://pkg.go.dev/log/slog#Handler) that prints logs in console for humans (with a readable format and colors)
+- 3️⃣ a utility [slog.Handler](https://pkg.go.dev/log/slog#Handler) that doesn't print or write something by itself but calls external function callbacks with 3 different types of API:
+    - a full-featured one with all the richness (but also complexity) of [slog.Attr](https://pkg.go.dev/log/slog#Attr) (different kinds of values, recursive groups...)
+    - a simplified one (with stringified and flattened [slog.Attr](https://pkg.go.dev/log/slog#Attr))
+    - and a compromise between the two
+- 4️⃣ an opinionated [twelve-factor app inspired](https://12factor.net/) "setup helper" that will make a full-featured [slog.Logger](https://pkg.go.dev/log/slog#Logger) with a minimal amount of boilerplate code (by using environment variables and opinionated choices)
+
+## Quickstart
+
+### Installation
+
+`go get github.com/fabien-marty/slog-helpers`   
+
+### Usage (1️⃣ StackTracer handler)
+
+#### Source
+
+```go
+{{ "cat ./cmd/stacktrace-demo1/main.go"|shell() }}
+```
+
+#### Output
+
+![stracktrace handler output](./docs/stacktrace-demo1.svg)
+
+#### To go further with this handler
+
+To go further with this `stacktrace` handler and have a look at all available features,
+please read [the reference documentation](docs/go-api-stacktrace.md).
+
+### Usage (2️⃣ Human handler)
+
+#### Source
+
+```go
+{{ "cat ./cmd/human-demo1/main.go"|shell() }}
+```
+
+#### Output
+
+![human handler output](./docs/human-demo1.svg)
+
+#### To go further with this handler
+
+To go further with this `stacktrace` handler and have a look at all available features,
+please read [the reference documentation](docs/go-api-human.md).
+
+### Usage (3️⃣ External handler)
+
+#### Source
+
+```go
+{{ "cat ./cmd/external-demo1/main.go"|shell() }}
+```
+
+#### Output
+
+![external handler output](./docs/external-demo1.svg)
+
+#### To go further with this handler
+
+To go further with this `stacktrace` handler and have a look at all available features,
+please read [the reference documentation](docs/go-api-external.md).
+
+### Usage (4️⃣ All in one with the setup helper) 
+
+#### Source
+
+```go
+{{ "cat ./cmd/slogc-demo1/main.go"|shell() }}
+```
+
+#### Output (without particular env (default) or with env var `LOG_FORMAT=text-human`)
+
+![slogc handler output](./docs/slogc-demo1.svg)
+
+#### Output (same code but with env var `LOG_FORMAT=json-gcp`)
+
+> [!TIP]  
+> Use `LOG_FORMAT=json-gcp` env var of `WithFormat("json-gcp")` in code to have a JSON output compatible with Google Cloud Platform Logging
+
+```json
+{{ "./cmd/slogc-demo2/json-gcp.sh"|shell() }}
+```
