@@ -10,7 +10,7 @@ import (
 
 	"github.com/fabien-marty/slog-helpers/internal/ansi"
 
-	"github.com/ztrue/tracerr"
+	"github.com/fabien-marty/tracerr"
 )
 
 // KeyForStackTraceEnabledDefault is the key of a boolean attribute to enable the stack trace for log level < MinimalLevelForStackTraceEnabledEnabled
