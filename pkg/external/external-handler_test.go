@@ -101,3 +101,21 @@ func TestNewExternalHandlerMultipleCalls(t *testing.T) {
 	logger.Warn(logMessage)
 	assert.True(t, warnCalled)
 }
+
+func TestWithRealCopy(t *testing.T) {
+	logMessage := "hello world"
+	callback := func(time time.Time, level slog.Level, message string, attrs []StringifiedAttr) error {
+		assert.False(t, time.IsZero())
+		assert.Equal(t, slog.LevelInfo, level)
+		assert.Equal(t, logMessage, message)
+		assert.Equal(t, 4, len(attrs))
+		return nil
+	}
+	h := New(&Options{
+		StringifiedCallback: callback,
+	})
+	logger := slog.New(h).With(slog.Int("foo", 123)).WithGroup("group").With(slog.String("foo2", "bar2"))
+	_ = logger.With(slog.String("foo2", "bar2"), slog.String("foo4", "bar4")) // original logger must not be affected
+	logger.Info(logMessage, slog.String("foo3", "bar3"), slog.Group("zzz", slog.String("aaa", "bbb")))
+
+}

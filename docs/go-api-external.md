@@ -79,7 +79,7 @@ func New(opts *Options) *Handler
 New creates a new ExternalHandler.
 
 <a name="Handler.Enabled"></a>
-### func \(\*Handler\) [Enabled](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L44>)
+### func \(\*Handler\) [Enabled](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L51>)
 
 ```go
 func (eh *Handler) Enabled(context context.Context, level slog.Level) bool
@@ -88,7 +88,7 @@ func (eh *Handler) Enabled(context context.Context, level slog.Level) bool
 
 
 <a name="Handler.Handle"></a>
-### func \(\*Handler\) [Handle](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L62>)
+### func \(\*Handler\) [Handle](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L67>)
 
 ```go
 func (eh *Handler) Handle(context context.Context, record slog.Record) error
@@ -97,7 +97,7 @@ func (eh *Handler) Handle(context context.Context, record slog.Record) error
 
 
 <a name="Handler.WithAttrs"></a>
-### func \(\*Handler\) [WithAttrs](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L57>)
+### func \(\*Handler\) [WithAttrs](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L63>)
 
 ```go
 func (eh *Handler) WithAttrs(attrs []slog.Attr) slog.Handler
@@ -106,7 +106,7 @@ func (eh *Handler) WithAttrs(attrs []slog.Attr) slog.Handler
 
 
 <a name="Handler.WithGroup"></a>
-### func \(\*Handler\) [WithGroup](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L52>)
+### func \(\*Handler\) [WithGroup](<https://github.com/fabien-marty/stlog-helpers/blob/main/pkg/external/external-handler.go#L59>)
 
 ```go
 func (eh *Handler) WithGroup(group string) slog.Handler

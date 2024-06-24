@@ -5,7 +5,7 @@ import (
 	"slices"
 )
 
-// Note: some MIT Code stolen from https://github.com/cappuccinotm/slogx
+// Note: some inspiration and some MIT Code stolen from https://github.com/cappuccinotm/slogx
 
 type payload struct {
 	group  string
@@ -33,16 +33,16 @@ func (a *Accumulator) Clone() *Accumulator {
 
 // WithAttrs returns a new accumulator with the given attributes.
 func (a *Accumulator) WithAttrs(attrs []slog.Attr) *Accumulator {
-	acc := *a // shallow copy
+	acc := a.Clone()
 	acc.last.attrs = append(acc.last.attrs, attrs...)
-	return &acc
+	return acc
 }
 
 // WithGroup returns a new accumulator with the given group.
 func (a *Accumulator) WithGroup(group string) *Accumulator {
-	acc := *a // shallow copy
+	acc := a.Clone()
 	acc.last = &payload{group: group, parent: acc.last}
-	return &acc
+	return acc
 }
 
 func (a *Accumulator) Assemble() (attrs []slog.Attr) {

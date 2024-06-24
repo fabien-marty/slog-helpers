@@ -41,6 +41,13 @@ func New(opts *Options) *Handler {
 	}
 }
 
+func (eh *Handler) cloneWithNewAccumulator(acc *accumulator.Accumulator) *Handler {
+	return &Handler{
+		Accumulator: acc,
+		opts:        eh.opts,
+	}
+}
+
 func (eh *Handler) Enabled(context context.Context, level slog.Level) bool {
 	enabledLevel := slog.LevelInfo
 	if eh.opts.HandlerOptions.Level != nil {
@@ -50,13 +57,11 @@ func (eh *Handler) Enabled(context context.Context, level slog.Level) bool {
 }
 
 func (eh *Handler) WithGroup(group string) slog.Handler {
-	eh.Accumulator = eh.Accumulator.WithGroup(group)
-	return eh
+	return eh.cloneWithNewAccumulator(eh.Accumulator.WithGroup(group))
 }
 
 func (eh *Handler) WithAttrs(attrs []slog.Attr) slog.Handler {
-	eh.Accumulator = eh.Accumulator.WithAttrs(attrs)
-	return eh
+	return eh.cloneWithNewAccumulator(eh.Accumulator.WithAttrs(attrs))
 }
 
 func (eh *Handler) Handle(context context.Context, record slog.Record) error {

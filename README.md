@@ -228,11 +228,11 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
 
 ```json
 {
-    "time": "2024-05-26T10:31:06.137736+02:00",
+    "time": "2024-06-24T07:06:32.218354885+02:00",
     "severity": "DEBUG",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.main",
-        "file": "/Users/fab/src/slog-helpers/cmd/slogc-demo1/main.go",
+        "file": "/home/fab/src/slog-helpers/cmd/slogc-demo1/main.go",
         "line": 22
     },
     "message": "this is a debug message",
@@ -242,11 +242,11 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
     "key": "value"
 }
 {
-    "time": "2024-05-26T10:31:06.137866+02:00",
+    "time": "2024-06-24T07:06:32.218453437+02:00",
     "severity": "INFO",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.main",
-        "file": "/Users/fab/src/slog-helpers/cmd/slogc-demo1/main.go",
+        "file": "/home/fab/src/slog-helpers/cmd/slogc-demo1/main.go",
         "line": 23
     },
     "message": "this is an info message",
@@ -255,11 +255,11 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
     }
 }
 {
-    "time": "2024-05-26T10:31:06.137879+02:00",
+    "time": "2024-06-24T07:06:32.218459373+02:00",
     "severity": "WARNING",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.main",
-        "file": "/Users/fab/src/slog-helpers/cmd/slogc-demo1/main.go",
+        "file": "/home/fab/src/slog-helpers/cmd/slogc-demo1/main.go",
         "line": 24
     },
     "message": "this is a warning message",
@@ -269,18 +269,18 @@ func funcToShowcaseTheStackTrace(lgr *slog.Logger) {
     "intkey": 123
 }
 {
-    "time": "2024-05-26T10:31:06.137882+02:00",
+    "time": "2024-06-24T07:06:32.218466498+02:00",
     "severity": "WARNING",
     "logging.googleapis.com/sourceLocation": {
         "function": "main.funcToShowcaseTheStackTrace",
-        "file": "/Users/fab/src/slog-helpers/cmd/slogc-demo1/main.go",
+        "file": "/home/fab/src/slog-helpers/cmd/slogc-demo1/main.go",
         "line": 30
     },
     "message": "this is a warning but with a stack trace",
     "common": {
         "rootkey": "rootvalue"
     },
-    "stacktrace": "stack trace\n/Users/fab/src/slog-helpers/cmd/slogc-demo1/main.go:30 main.funcToShowcaseTheStackTrace()\n/Users/fab/src/slog-helpers/cmd/slogc-demo1/main.go:25 main.main()"
+    "stacktrace": "stack trace\n/home/fab/src/slog-helpers/cmd/slogc-demo1/main.go:30 main.funcToShowcaseTheStackTrace()\n/home/fab/src/slog-helpers/cmd/slogc-demo1/main.go:25 main.main()"
 }
 
 ```

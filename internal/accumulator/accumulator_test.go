@@ -45,3 +45,12 @@ func TestAssembleWithRecordAttrs(t *testing.T) {
 	assert.Equal(t, "foo=123", attrs[0].String())
 	assert.Equal(t, "group=[foo2=bar2 foo3=bar3 zzz=[aaa=bbb]]", attrs[1].String())
 }
+
+func TestRealCopy(t *testing.T) {
+	a := New()
+	b := a.WithAttrs([]slog.Attr{slog.String("foo", "bar")})
+	attrs := b.Assemble()
+	assert.Equal(t, 1, len(attrs))
+	attrs = a.Assemble()
+	assert.Equal(t, 0, len(attrs))
+}
